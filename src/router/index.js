@@ -5,6 +5,11 @@ import SongList from 'views/SongList'
 import Rank from 'views/Rank'
 import MusicList from 'views/MusicList'
 import Singer from 'views/Singer'
+import SearchResult from 'views/SearchResult'
+import SearchSongs from 'components/SearchSongs'
+import SearchAlbums from 'components/SearchAlbums'
+import SearchArtists from 'components/SearchArtists'
+import SearchSongList from 'components/SearchSongList'
 
 Vue.use(Router)
 
@@ -42,6 +47,29 @@ export default new Router({
     {
       path: '/singer/:id',
       component: Singer
+    },
+    {
+      path: '/search',
+      component: SearchResult,
+      redirect: '/search/songs',
+      children: [
+        {
+          path: 'songs',
+          component: SearchSongs
+        },
+        {
+          path: 'albums',
+          component: SearchAlbums
+        },
+        {
+          path: 'artists',
+          component: SearchArtists
+        },
+        {
+          path: 'songlist',
+          component: SearchSongList
+        }
+      ]
     }
   ]
 })

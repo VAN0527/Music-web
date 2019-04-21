@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list clearfix">
     <div
       class="list-item"
       v-for="item in list"
@@ -37,26 +37,25 @@ export default {
 @import 'styles/mixin.scss';
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
   .list-item {
+    float: left;
+    width: 25%;
+    padding: 5px;
+    box-sizing: border-box;
     text-align: center;
     cursor: pointer;
+    
     .cover {
-      width: 250px;
-
       img {
         width: 100%;
-        height: 100%;
+        height: 300px;
       }
     }
 
     .info {
       height: 35px;
       line-height: 35px;
-      width: 250px;
+      width: 100%;
       @include no-wrap();
 
       &:hover {
