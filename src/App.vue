@@ -31,7 +31,7 @@ export default {
 @import 'styles/normalize.css';
 @import 'styles/common.scss';
 @import 'styles/variable.scss';
-@import url('//at.alicdn.com/t/font_1117489_y6l6l34ki4p.css');
+@import url('//at.alicdn.com/t/font_1117489_ozeucbmiyf.css');
 
 body, html {
   height: 100%;

@@ -10,6 +10,7 @@ import SearchSongs from 'components/SearchSongs'
 import SearchAlbums from 'components/SearchAlbums'
 import SearchArtists from 'components/SearchArtists'
 import SearchSongList from 'components/SearchSongList'
+import PlayerPlayList from 'components/PlayerPlayList'
 
 Vue.use(Router)
 
@@ -70,6 +71,10 @@ export default new Router({
           component: SearchSongList
         }
       ]
+    },
+    {
+      path: '/playlist',
+      component: PlayerPlayList
     }
   ]
 })

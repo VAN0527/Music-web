@@ -1,5 +1,5 @@
 <template>
-  <div class="player" v-if="playlist.length > 0">
+  <div class="player" v-show="playlist.length > 0">
     <div class="music-info">
       <div class="cover-img">
         <img 
@@ -23,13 +23,13 @@
     </div>
     <div class="control">
       <button @click="prev">
-        <span class="icon-shangyishou"></span>
+        <i class="icon-shangyishou"></i>
       </button>
       <button @click="togglePlay">
-        <span :class="iconPlay"></span>
+        <i :class="iconPlay"></i>
       </button>
       <button @click="next">
-        <span class="icon-xiayishou"></span>
+        <i class="icon-xiayishou"></i>
       </button>
     </div>
     <div class="play-message">
@@ -51,9 +51,11 @@
       </div>
       <div class="more">
         <button @click="changeMode">
-          <span :class="iconMode"></span>
+          <i :class="iconMode"></i>
         </button>
-        <button><span class="icon-bofangliebiao"></span></button>
+        <button @click="toPlaylist">
+          <i class="icon-bofangliebiao"></i>
+        </button>
       </div>
     </div>
     <div class="play-progress">
@@ -169,7 +171,7 @@ export default {
       } else {
         let newIndex = this.currentIndex + 1
         if (this.currentIndex === this.playlist.length - 1) {
-          newIndex = 1
+          newIndex = 0
         }
 
         this.setCurrentIndex(newIndex)
@@ -230,6 +232,11 @@ export default {
     selectArtist (artist) {
       this.$router.push({
         path: `/singer/${artist.id}`
+      })
+    },
+    toPlaylist () {
+      this.$router.push({
+        path: '/playlist'
       })
     },
     $_loop () {

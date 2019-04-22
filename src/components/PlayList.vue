@@ -11,7 +11,6 @@
         <span
           class="artists"
           v-for="artist in song.artists"
-          :key="artist.id"
           @click="selectArtist(artist)"
         >
           {{artist.name}}
