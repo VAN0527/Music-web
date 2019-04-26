@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <div class="singer-info">
+    <div class="singer-info clearfix">
       <div class="cover">
         <img v-lazy="desc.picUrl" :key="desc.picUrl">
       </div>
@@ -8,7 +8,7 @@
         <div class="name">
           {{desc.name}}
         </div>
-        <div class="intro">
+        <div class="desc">
           简介: {{desc.briefDesc}}
         </div>
       </div>
@@ -34,7 +34,7 @@
         <span> 全部播放</span>
       </div>
       <PlayList
-        :songs="songs"
+        :list="songs"
         @select="selectItem"
       ></PlayList>
     </div>
@@ -137,7 +137,7 @@ export default {
         return {
           id: item.id,
           name: item.name,
-          picUrl: item.al.picUrl,
+          picUrl: `${item.al.picUrl}?param=400y400`,
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
@@ -162,47 +162,54 @@ export default {
 @import 'styles/variable.scss';
 
 .singer {
-  margin-top: 20px;
   .singer-info {
-    min-height: 300px;
+    padding: 20px 0;
 
     .cover {
-      display: flex;
-      height: 300px;
-      margin: 0 30px;
-      float: left;
-      align-items: center;
+      text-align: center;
+
+      @media screen and (min-width: $width-large) {
+        float: left;
+        width: 300px;
+      }
+
       img {
         height: 250px;
         width: 250px;
+        border-radius: 10px;
       }
     }
 
     .info {
-      margin-left: 300px;
-
       .name {
-        font-size: 32px;
-        margin: 10px;
+        margin: 10px 0;
+        font-size: 1.5em;
+        text-align: center;
       }
 
-      .intro {
+      .desc {
         padding: 0 30px;
-        font-size: 18px;
+        word-break: break-all;
+
+        @media screen and (min-width: $width-large) {
+          margin: 0 auto 0 300px;
+        }
       }
     }
   }
 
   .tab-bar {
     margin-bottom: 10px;
-    padding: 5px 30px;
-    background-color: rgb(194, 193, 193);
-    font-size: 24px;
+    padding: 5px 10px;
+    font-size: 1.25em;
+    background-color: #fff;
     color: #000;
-    .tab-item {
-      display: inline-block;
+
+    .tab-item {    
       padding: 0 10px;
+      display: inline-block;
       cursor: pointer;
+
       &:hover {
         color: $text-hover-color;
       }
@@ -215,10 +222,11 @@ export default {
 
   .playlist {
     .all-play {
+      margin: 5px 0;
+      padding: 0 10px;
       display: inline-block;
-      margin: 10px 0;
-      padding: 0 40px;
       cursor: pointer;
+      
       &:hover {
         color: $text-hover-color;
       }

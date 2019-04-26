@@ -1,10 +1,6 @@
 <template>
   <div class="songlist">
-    <div class="notfound" v-if="songlist.length === 0">
-      未找到相关信息
-    </div>
     <List
-      v-if="songlist.length > 0"
       :list="songlist"
       @select="selectSongList"
     ></List>
@@ -45,7 +41,7 @@ export default {
             return {
               id: playlist.id,
               name: playlist.name,
-              picUrl: playlist.coverImgUrl
+              picUrl: `${playlist.coverImgUrl}?param=400y400`
             }
           })
         }
@@ -57,11 +53,6 @@ export default {
 
 <style lang="scss" scoped>
 .songlist {
-  margin-top: 30px;
-
-  .notfound {
-    font-size: 28px;
-    text-align: center;
-  }
+  margin-top: 1em;
 }
 </style>

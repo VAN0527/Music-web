@@ -3,18 +3,22 @@
     <ul>
       <li
         class="playlist-item" 
-        v-for="song in songs"
+        v-for="song in list"
         :key="song.id"
         @click.stop="selectItem(song)"
       >
-        <span class="name">{{song.name}} - </span>
-        <span
-          class="artists"
-          v-for="artist in song.artists"
-          @click="selectArtist(artist)"
-        >
-          {{artist.name}}
-        </span>
+        <div class="info">
+          <span class="name">{{song.name}}</span>
+          <div class="artists">
+            <span
+              class="artists-item"
+              v-for="artist in song.artists"
+              @click.stop="selectArtist(artist)"
+            >
+              {{artist.name}}
+            </span>
+          </div>
+        </div>
         <span class="duration">{{song.duration}}</span>
       </li>
     </ul>
@@ -24,7 +28,7 @@
 <script>
 export default {
   props: {
-    songs: {
+    list: {
       type: Array,
       default: () => []
     }
@@ -45,26 +49,49 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
+
 .playlist {
   .playlist-item {
-    padding: 0 40px;
+    padding: 5px 10px;
     height: 40px;
-    line-height: 40px;
+    border-bottom: 1px solid #fff;
     cursor: pointer;
     
-    &:hover {
-      background-color: $hover-bg-color;
-      color: rgb(167, 151, 151);
+    &:last-child {
+      border-bottom: none;
     }
 
-    .artists {
-      &:hover {
-        color: $text-hover-color;
+    .info {
+      float: left;
+      width: 70%;
+
+      .name,
+      .artists {
+        width: 100%;
+        height: 20px;
+        display: block;
+        line-height: 20px;
+        @include no-wrap;
+      }
+
+      .artists {
+        font-size: 0.7em;
+        color: rgb(184, 184, 184);
+
+        .artists-item {
+          @media screen and (min-width: $width-large) {
+            &:hover {
+                color: $text-hover-color;
+              }
+          }
+        }
       }
     }
 
     .duration {
       float: right;
+      line-height: 40px;
     }
   }
 }

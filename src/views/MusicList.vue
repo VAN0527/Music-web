@@ -1,6 +1,6 @@
 <template>
   <div class="musiclist">
-    <div class="list-info">
+    <div class="list-info clearfix">
       <div class="cover">
         <img 
           v-lazy="coverImg" 
@@ -8,21 +8,24 @@
         >
       </div>
       <div class="info">
-        <h2 class="title">{{musicList.name}}</h2>
+        <h2 class="title">{{title}}</h2>
         <p class="creater">{{creator}}</p>
         <div class="btns">
-          <button @click="playAll">
+          <div 
+            class="btn"
+            @click="playAll"
+          >
             <i class="icon-bofang"></i> 全部播放
-          </button>
-          <button>
+          </div>
+          <div class="btn">
             <i class="icon-shoucang"></i> 收藏
-          </button>
+          </div>
         </div>
       </div>
     </div>
     <div class="playlist">
       <PlayList
-        :songs="songs" 
+        :list="songs" 
         @select="selectItem"
       ></PlayList>
       <Loading :loading="loading"></Loading>
@@ -55,6 +58,7 @@ export default {
       songs: [],
       creator: '',
       coverImg: '',
+      title: '',
       loading: true
     }
   },
@@ -104,7 +108,8 @@ export default {
           const data = res.data.playlist
           this.songs = this.$_formatSong(data.tracks)
           this.creator = data.creator.nickname
-          this.coverImg = data.coverImgUrl
+          this.coverImg = `${data.coverImgUrl}?param=600y600`
+          this.title = data.name
           this.loading = false
         }
       })
@@ -115,7 +120,9 @@ export default {
         if (res.status === 200) {
           const data = res.data
           this.songs = this.$_formatSong(data.songs)
-          this.coverImg = data.album.picUrl
+          this.coverImg = `${data.album.picUrl}?param=600y600`
+          this.title = data.album.name
+          this.creator = data.album.artist.name
           this.loading = false
         }
       })
@@ -127,7 +134,7 @@ export default {
           name: item.name,
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
-          picUrl: item.al.picUrl,
+          picUrl: `${item.al.picUrl}?param=600y600`,
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3` 
         }
       })
@@ -149,53 +156,47 @@ export default {
 @import 'styles/variable.scss';
 
 .musiclist {
-  margin-top: 20px;
   .list-info {
     position: relative;
-    // background-color: aquamarine;
+    padding: 20px;
 
     .cover {
-      display: flex;
-      height: 300px;
-      margin: 0 30px;
-      float: left;
-      align-items: center;
+      text-align: center;
+
+      @media screen and (min-width: $width-large) {
+        float: left;
+        width: 300px;
+      }
+
       img {
         height: 250px;
         width: 250px;
+        border-radius: 10px;
       }
     }
 
     .info {
-      height: 300px;
-      margin-left: 310px;
       position: relative;
+      text-align: center;
       overflow: hidden;
-
+      
       .title {
-        margin-top: 30px;
+        font-size: 1.3em;
+        font-weight: 400;
         overflow: hidden;
       }
 
       .btns {
-        position: absolute;
-        bottom: 28px;
-        
-        button {
-          padding: 0 10px;
-          margin-right: 20px;
-          height: 40px;
-          line-height: 40px;
+        .btn {
+          margin: 0 5px;
+          padding: 10px 10px;
+          display: inline-block;
           border-radius: 10px;
           border: none;
           background-color: $text-hover-color;
-          font-size: 18px;
+          color: #fff;
           cursor: pointer;
           outline: none;
-
-          &:hover {
-            color: $text-color;
-          }
         }
       }
     }

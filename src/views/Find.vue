@@ -12,34 +12,19 @@
         ></List>
       </div>
       <div class="newmusic-wrapper">
-        <h2>新歌推荐</h2>
+        <h2 class="title">新歌推荐</h2>
         <div class="playlist">
           <div 
             class="all-play"
             @click="playAll"
           >
-            <span class="icon-bofang"></span>
+            <i class="icon-bofang"></i>
             <span> 全部播放</span>
           </div>
-          <ul>
-            <li
-              class="playlist-item" 
-              v-for="(item, index) in newMusic" 
-              :key="item.id"
-              @click="selectItem(item)"
-            >
-              <span class="name">{{index + 1}} {{item.name}} - </span>
-              <span
-                class="artists"
-                v-for="artist in item.artists"
-                :key="artist.id"
-                @click="selectArtist(artist)"
-              >
-                {{artist.name}}
-              </span>
-              <span class="duration">{{item.duration}}</span>
-            </li>
-          </ul>
+          <PlayList 
+            :list="newMusic"
+            @select="selectItem"
+          ></PlayList>
         </div>
       </div>
       <Loading :loading="loading"></Loading>
@@ -50,6 +35,7 @@
 <script>
 import Swiper from 'components/Swiper'
 import List from 'components/List'
+import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
 import { getBanner, getRecommend, getNewMusic, getHotSingers } from 'api/find.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
@@ -60,7 +46,8 @@ export default {
   components: {
     Swiper,
     List,
-    Loading
+    Loading,
+    PlayList
   },
   data () {
     return {
@@ -99,16 +86,14 @@ export default {
       this.setPlay(true)
       this.setCurrentIndex(0)
     },
-    selectArtist (artist) {
-      const id = artist.id
-      this.$router.push({
-        path: `/singer/${id}`
-      })
-    },
     $_getBanner () {
       getBanner().then(res => {
         if (res.status === 200) {
-          this.banners = res.data.banners
+          this.banners = res.data.banners.map(banner => {
+            return {
+              imageUrl: `${banner.imageUrl}?param=1000y300`
+            }
+          })
         }
       })
     },
@@ -130,7 +115,7 @@ export default {
               name: item.name,
               duration: formatDuration(item.song.duration),
               artists: formatArtists(item.song.artists),
-              picUrl: item.song.album.picUrl,
+              picUrl: `${item.song.album.picUrl}?param=600y600`,
               url:`https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
             }
           })
@@ -159,12 +144,25 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .find {
   .banner {
-    margin: 20px 0;
-    height: 300px;
+    padding: 20px 10px 0 10px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
     overflow: hidden;
+
+    @media screen and (min-width: $width-medium) {
+      margin: 20px 0;
+    }
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 100;
   }
 
   .recommend {
@@ -172,38 +170,18 @@ export default {
 
     .newmusic-wrapper {
       .playlist {
-        font-size: 18px;
+        font-size: 1em;
 
         .all-play {
           display: inline-block;
-          margin: 5px 0;
-          padding: 0 20px;
-          cursor: pointer;
-          &:hover {
-            color: $text-hover-color;
-          }
-        }
-
-        .playlist-item {
-          padding: 0 20px;
-          height: 40px;
-          line-height: 40px;
+          margin-bottom: 5px;
+          padding: 0 10px;
           cursor: pointer;
           
-          &:hover {
-            background-color: $hover-bg-color;
-            color: rgb(167, 151, 151);
-          }
-
-          .artists {
+          @media screen and (min-width: $width-medium) {
             &:hover {
               color: $text-hover-color;
             }
-          }
-
-          .duration {
-            float: right;
-            margin-right: 20px;
           }
         }
       }

@@ -5,7 +5,7 @@
     </div>
     <div class="main">
       <Header></Header>
-      <div class="main-wrapper">
+      <div class="main-wrapper" ref="mainWrapper">
         <router-view/>
       </div>
     </div>
@@ -17,12 +17,23 @@
 import Header from 'components/Header.vue'
 import SideBar from 'components/SideBar.vue'
 import Player from 'components/Player.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Header,
     SideBar,
     Player
+  },
+  computed: {
+    ...mapGetters([
+      'currentSong'
+    ])
+  },
+  watch: {
+    currentSong () {
+      this.$refs.mainWrapper.style.marginBottom = '80px'
+    }
   }
 }
 </script>
@@ -33,30 +44,47 @@ export default {
 @import 'styles/variable.scss';
 @import url('//at.alicdn.com/t/font_1117489_ozeucbmiyf.css');
 
-body, html {
+html, body {
   height: 100%;
 }
 
 #app {
-  height: 100%;
+  min-height: 100vh;
   color: $text-color;
   background-color: $theme-color;
-}
-
-.side {
-  height: 100%;
-  width: 250px;
-  float: left;
-}
-
-.main {
-  margin-left: 250px;
-  height: 100%;
   overflow: auto;
 
-  .main-wrapper {
-    margin: 0 auto 120px auto;
-    max-width: 1200px;
+  .side {
+    height: 40px;
+    width: 100%;
+
+    @media screen and (min-width: $width-medium) {
+      height: 100vh;
+      width: 10%;
+      float: left;
+    }
+
+    @media screen and (min-width: $width-large) {
+      width: 250px;
+    }
+  }
+
+  .main {
+    height: 100vh;
+
+    @media screen and (min-width: $width-medium) {
+      overflow: auto;
+      margin-left: 10%;
+    }
+
+    @media screen and (min-width: $width-large) {
+      margin-left: 250px;
+    }
+
+    .main-wrapper {
+      margin: 0 auto 20px auto;
+      max-width: 1200px;
+    }
   }
 }
 </style>

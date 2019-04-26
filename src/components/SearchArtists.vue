@@ -1,18 +1,13 @@
 <template>
   <div class="artists clearfix">
-    <div class="notfound" v-if="artists.length === 0">
-      未找到相关信息
-    </div>
-    <div v-if="artists.length > 0">
-      <div 
-        class="artist-item"
-        v-for="artist in artists"
-        :key="artist.id"
-        @click="selectArtist(artist.id)"
-      >
-        <img class="pic" :src="artist.img1v1Url">
-        <span class="name">{{artist.name}}</span>
-      </div>
+    <div 
+      class="artist-item"
+      v-for="artist in artists"
+      :key="artist.id"
+      @click="selectArtist(artist.id)"
+    >
+      <img class="pic" :src="artist.picUrl">
+      <span class="name">{{artist.name}}</span>
     </div>
   </div>
 </template>
@@ -42,7 +37,13 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.artists = res.data.result.artists
+          this.artists = res.data.result.artists.map(artist => {
+            return {
+              id: artist.id,
+              picUrl: `${artist.img1v1Url}?param=400y400`,
+              name: artist.name
+            }
+          })
         }
       })
     }
@@ -51,26 +52,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
 @import 'styles/mixin.scss';
 
 .artists {
-  margin-top: 30px;
-
-  .notfound {
-    font-size: 28px;
-    text-align: center;
-  }
-  
   .artist-item {
     float: left;
-    box-sizing: border-box;
+    margin-top: 1em;
     padding: 10px;
-    width: 25%;
+    width: 50%;
+    box-sizing: border-box;
     text-align: center;
+
+    @media screen and (min-width: $width-medium) {
+      width: 33.3333%
+    }
+
+    @media screen and (min-width: $width-large) {
+      width: 25%;
+    }
 
     .pic {
       width: 100%;
-      height: 300px;
       border-radius: 50%;
     }
 

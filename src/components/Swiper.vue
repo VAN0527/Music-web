@@ -7,8 +7,6 @@
       <img :src="item.imageUrl">
     </swiperSlide>
     <div class="swiper-pagination" slot="pagination"></div>
-    <div class="swiper-button-prev" slot="button-prev"></div>
-    <div class="swiper-button-next" slot="button-next"></div>
   </swiper>
 </template>
 
@@ -40,10 +38,6 @@ export default {
           pagination: {
             el: '.swiper-pagination',
             clickable: true
-          },
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
           }
         }
       }
@@ -53,8 +47,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
+
 img {
   width: 100%;
-  height: 300px;
+  height: 200px;
+}
+
+@media screen and (min-width: $width-medium) {
+  img {
+    height: 300px;
+  }
 }
 </style>

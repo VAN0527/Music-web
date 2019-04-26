@@ -85,7 +85,7 @@ export default {
     ul {
       display: flex;
       justify-content: space-around;
-      font-size: 24px;
+      font-size: 1.5em;
       font-weight: 100;
 
       .tab-item {

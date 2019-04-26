@@ -1,36 +1,20 @@
 <template>
   <div class="albums clearfix">
-    <div class="notfound" v-if="albums.length === 0">
-      未找到相关信息
-    </div>
-    <div v-if="albums.length > 0">
-      <div 
-        class="albums-item"
-        v-for="album in albums"
-        :key="album.id"
-      >
-        <img :src="album.picUrl" class="pic">
-        <div
-          class="name"
-          @click="selectAlbum(album.id)"  
-        >
-          <span>{{album.name}}</span>
-        </div>
-        <div
-          class="artists"
-          @click="selectArtist(album.artist.id)"
-        >
-          <span>{{album.artist.name}}</span>
-        </div>
-      </div>
-    </div>
+    <List
+      :list="albums"
+      @select="selectAlbum"
+    ></List>
   </div>
 </template>
 
 <script>
 import { getSearchResult } from 'api/search.js'
+import List from 'components/List'
 
 export default {
+  components: {
+    List
+  },
   data () {
     return {
       albums: []
@@ -40,14 +24,9 @@ export default {
     this.$_getSearchResult()
   },
   methods: {
-    selectAlbum (id) {
+    selectAlbum (album) {
       this.$router.push({
-        path: `/album/${id}`
-      })
-    },
-    selectArtist (id) {
-      this.$router.push({
-        path: `/singer/${id}`
+        path: `/album/${album.id}`
       })
     },
     $_getSearchResult () {
@@ -57,7 +36,14 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.albums = res.data.result.albums
+          this.albums = res.data.result.albums.map(album => {
+            return {
+              id: album.id,
+              name: album.name,
+              artist: album.artist,
+              picUrl: `${album.picUrl}?param=400y400`
+            }
+          })
         }
       })
     }
@@ -66,53 +52,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
 @import 'styles/mixin.scss';
 
 .albums {
-  margin-top: 30px;
-  font-size: 20px;
-
-  .notfound {
-    font-size: 28px;
-    text-align: center;
-  }
-
-  .albums-item {
-    height: 80px;
-    padding: 20px;
-    line-height: 80px;
-    border-bottom: 1px solid #fff;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .pic {
-      float: left;
-      width: 80px;
-      height: 80px;
-    }
-
-    .name {
-      float: left;
-      margin-left: 10px;
-      max-width: 60%;
-      @include no-wrap;
-      span {
-        cursor: pointer;
-      }
-    }
-
-    .artists {
-      float: right;
-      margin-right: 20px;
-      max-width: 10%;
-      @include no-wrap;
-
-      span {
-        cursor: pointer;
-      }
-    }
-  }
+  margin-top: 1em;
 }
 </style>

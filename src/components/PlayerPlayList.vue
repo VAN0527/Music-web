@@ -12,14 +12,15 @@
           v-for="song in list"
           :key="song.id"
         >
-          <div class="item-info">
-            <span class="name">{{song.name}} - </span>
-            <span
-              class="artists"
-              v-for="artist in song.artists"
-            >
-              {{artist.name}}
-            </span>
+          <div class="item-info clearfix">
+            <div class="info">
+              <span class="name">{{song.name}}</span>
+              <div class="artists">
+                <span v-for="artist in song.artists">
+                  {{artist.name}}
+                </span>
+              </div>
+            </div>
             <span class="duration">{{song.duration}}</span>
           </div>
           <div class="item-control">
@@ -70,21 +71,23 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .playlist-wrapper {
   h2 {
     text-align: center;
-    font-size: 32px;
+    font-size: 2em;
     font-weight: 100;
   }
 
   .clear {
-    margin-bottom: 5px;
-    font-size: 22px;
+    padding: 0 0 5px 10px;
+    font-size: 1.3em;
     cursor: default;
     
     span {
       cursor: pointer;
+
       &:hover {
         color: $text-hover-color;
       }
@@ -93,9 +96,8 @@ export default {
 
   .playlist {
     .playlist-item {
-      padding: 10px;
+      padding: 5px 10px;
       border-bottom: 1px solid #fff;
-      font-size: 20px;
 
       &:last-child {
         border-bottom: none;
@@ -108,15 +110,26 @@ export default {
 
       .item-info {
         padding: 4px 0;
-
+        height: 40px;
+        
+        .info {
+          float: left;
+          width: 70%;
+          line-height: 20px;
+          @include no-wrap;
+        }
+        
         .duration {
           float: right;
+          line-height: 40px;
         }
       }
 
       .item-control {
+        font-size: 1.3em;
+        
         i {
-          margin: 0 4px;
+          padding: 0 4px 0 0;
           cursor: pointer;
         }
 

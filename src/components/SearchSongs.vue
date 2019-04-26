@@ -1,12 +1,9 @@
 <template>
   <div class="songs">
-    <div class="notfound" v-if="songs.length === 0">
-      未找到相关信息
-    </div>
-    <ul class="songlist" v-if="songs.length > 0">
+    <ul class="songlist">
       <li class="songlist-item clearfix">
         <div class="name">
-          <span>歌曲</span>
+          <span>歌曲名</span>
         </div>
         <div class="artists">
           <span>歌手</span>
@@ -61,6 +58,11 @@ export default {
       songs: []
     }
   },
+  watch: {
+    '$route' () {
+      this.$_getSearchResult()
+    }
+  },
   mounted () {
     this.$_getSearchResult()
   },
@@ -101,7 +103,7 @@ export default {
             name: data.name,
             artists: formatArtists(data.ar),
             duration: formatDuration(data.dt),
-            picUrl: data.al.picUrl,
+            picUrl: `${data.al.picUrl}?param=600y600`,
             url: `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`
           }
           return song
@@ -120,18 +122,18 @@ export default {
 @import 'styles/mixin.scss';
 
 .songs {
-  margin-top: 30px;
-  font-size: 21px;
+  font-size: 1em;
   
-  .notfound {
-    font-size: 28px;
-    text-align: center;
-  }
-
   .songlist {
     .songlist-item {
-      padding: 10px 20px;
+      height: 1.6em;
+      padding: 5px;
       border-bottom: 1px solid #fff;
+      line-height: 1.6em;
+
+      &:first-child {
+        padding-left: 1em;
+      }
 
       &:last-child {
         border-bottom: none;
@@ -148,7 +150,7 @@ export default {
 
         .play {
           margin-right: 5px;
-          font-size: 26px;
+          font-size: 1.5em;
           vertical-align: middle;
           cursor: pointer;
 

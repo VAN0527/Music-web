@@ -1,25 +1,26 @@
 <template>
   <div class="rank">
-    <div class="songlist-rank-wrapper">
+    <div class="songlist-rank-wrapper clearfix">
       <div 
-        class="songlist-rank-item" 
+        class="songlist-rank-item clearfix" 
         v-for="item in songlistRank"
         :key="item.id"
-        @click="selectItem(item)"
       >
-        <div class="coverImg">
+        <div
+          class="coverImg"
+          @click="selectItem(item)"
+        >
           <img :src="item.coverImgUrl">
         </div>
-        <div class="songs">
-          <ul>
-            <li
-             v-for="(song, index) in item.tracks"
-             :key="index"
-             >
-              {{index + 1}}. {{song.first}} - {{song.second}}
-            </li>
-          </ul>
-        </div>
+        <ul class="songs">
+          <li
+            class="songs-item"
+            v-for="(song, index) in item.tracks"
+            :key="index"
+            >
+            {{index + 1}}. {{song.first}} - {{song.second}}
+          </li>
+        </ul>
       </div>
     </div>
     <Loading :loading="loading"></Loading>
@@ -67,43 +68,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
 @import 'styles/mixin.scss';
+
 .rank {
   position: relative;
 
   .songlist-rank-wrapper {
     margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
 
     .songlist-rank-item {
-      margin: 5px 10px;
-      display: flex;
-      flex: 1;
-      .coverImg {
-        flex: 0 0 auto;
-        width: 200px;
-        height: 200px;
-        background: #fff;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
 
+      @media screen and (min-width: $width-medium) {
+        float: left;  
+        width: 50%;
+      }
+
+      .coverImg {
+        width: 100%;
+        text-align: center;
+        
         img {
           width: 100%;
+          max-width: 300px;    
           height: 100%;
+          border-radius: 10px;
+        }
+
+        @media screen and (min-width: $width-medium) {
+          float: left;
+          width: 50%;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
 
       .songs {
-        flex: 1;
-        width: 200px;
-        margin-left: 10px;
+        width: 100%;
 
-        li {        
+        .songs-item {  
+          padding: 5px 10px; 
+          width: 100%;     
           height: 30px;
-          padding: 10px 0;
+          box-sizing: border-box;
           line-height: 30px;
-          font-size: 18px;
           @include no-wrap;
+        }
+
+        @media screen and (min-width: $width-medium) {
+          float: left;
+          width: 50%;
         }
       }
     }

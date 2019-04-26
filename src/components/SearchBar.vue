@@ -1,7 +1,7 @@
 <template>
   <div class="search-bar">
     <div class="search-box" >
-      <i class="icon-sousuo"></i>
+      <i class="icon-sousuo search-icon"></i>
       <input  
         type="text" 
         placeholder="请输入搜索内容" 
@@ -63,6 +63,7 @@ export default {
             type: 1
           }
         })
+        this.suggestsShow = false
       }
     }
   }
@@ -70,32 +71,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
 @import 'styles/mixin.scss';
 
 .search-bar {
   position: relative;
+
   .search-box {
     position: relative;
-    
-    i {
+    margin-left: 10px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1em;
+
+    @media screen and (min-width: $width-medium) {
+      height: 60px;
+      line-height: 60px;
+    }
+
+    .search-icon {
       position: absolute;
-      left:10px;
-      top:7px;
+      left: 0;
+      top: 0;
       color: #000;
     }
 
     input {
-      padding: 5px 5px 5px 30px;
-      width: 200px;
-      border: 1px solid #fff;
-      border-radius: 5px;
+      box-sizing: border-box;
+      padding: 0 2px 0 1.5em;
+      height: 35px;
+      width: 100%;
+      border: none;
       outline: none;
+
+      @media screen and (min-width: $width-medium) {
+        height: 45px;
+        line-height: 45px;
+      }
     }
   }
 
   .suggests {
     position: absolute;
-    width: 235px;
+    width: 100%;
     z-index: 10;
   }
 }

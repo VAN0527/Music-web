@@ -1,5 +1,5 @@
 <template>
-  <div class="player" v-show="playlist.length > 0">
+  <div class="player clearfix" v-show="playlist.length > 0">
     <div class="music-info">
       <div class="cover-img">
         <img 
@@ -22,15 +22,24 @@
       </div>
     </div>
     <div class="control">
-      <button @click="prev">
-        <i class="icon-shangyishou"></i>
-      </button>
-      <button @click="togglePlay">
-        <i :class="iconPlay"></i>
-      </button>
-      <button @click="next">
-        <i class="icon-xiayishou"></i>
-      </button>
+      <div class="btn">
+        <i 
+          class="icon-shangyishou"
+          @click="prev"
+        ></i>
+      </div>
+      <div class="btn">
+        <i
+          :class="iconPlay"
+          @click="togglePlay"
+        ></i>
+      </div>
+      <div class="btn">
+        <i 
+          class="icon-xiayishou"
+          @click="next"
+        ></i>
+      </div>
     </div>
     <div class="play-message">
       <div class="volume-control">
@@ -50,12 +59,18 @@
         <span>{{currentTime}} / {{currentSong.duration}}</span>
       </div>
       <div class="more">
-        <button @click="changeMode">
-          <i :class="iconMode"></i>
-        </button>
-        <button @click="toPlaylist">
-          <i class="icon-bofangliebiao"></i>
-        </button>
+        <div class="btn">
+          <i 
+            :class="iconMode" 
+            @click="changeMode"
+          ></i>
+        </div>
+        <div class="btn">
+          <i 
+            class="icon-bofangliebiao" 
+            @click="toPlaylist"
+          ></i>
+        </div>
       </div>
     </div>
     <div class="play-progress">
@@ -272,43 +287,77 @@ export default {
 @import 'styles/mixin.scss';
 
 .player {
-  position: relative;
-  height: 80px;
-  width: 100%;
-  background-color: rgb(17, 17, 17);
   position: fixed;
   bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 60px;
+  width: 100%;
+  background-color: rgb(17, 17, 17);
+  color: #fff;
+  
+  @media screen and (min-width: $width-large) {
+    height: 80px;
+  }
 
   .music-info {
-    display: flex;
-    align-items: center;
-    margin-left: 50px;
+    float: left;
+    box-sizing: border-box;
+    padding: 0 5px;
+    width: 30%;
+    @include no-wrap;
 
     .cover-img {
-      width: 60px;
-      height: 60px;
+      display: none;
+      
+      @media screen and (min-width: $width-medium) {
+        float: left;
+        display: block;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+      }
+
+      @media screen and (min-width: $width-large) {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+      }
 
       img {
-        width: 100%;
-        height: 100%;
+        width: 80%;
+        height: 80%;
+        border-radius: 10px;
+        vertical-align: middle;
       }
     }
 
     .music-text {
+      width: 100%;
+      height: 60px;
+      line-height: 30px;
       @include no-wrap;
 
-      span {
-        display: block;
-        margin: 10px 5px;
+      @media screen and (min-width: $width-medium) {
+        float: left;
+        width: 65%;
+      }
+
+      @media screen and (min-width: $width-large) {
+        height: 80px;
+        line-height: 40px;
       }
 
       .artists {
-        display: flex;
+        width: 100%;
+        font-size: .3em;
+        @include no-wrap;
+
+        @media screen and (min-width: $width-large) {
+          font-size: 1em;
+        }
+
         .artists-item {
           cursor: pointer;
+
           &:hover {
             color: $text-hover-color;
           }
@@ -318,58 +367,106 @@ export default {
   }
 
   .control {
+    float: left;
+    width: 40%;
+    height: 60px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+
+    @media screen and (min-width: $width-large) {
+      height: 80px;
+    }
+
+    .btn {
+      font-size: 1.8em;
+      
+      @media screen and (min-width: $width-large) {
+        margin-top: -5px;
+        font-size: 2.5em;
+      }
+    }
   }
 
   .play-message {
+    float: left;
+    padding-right: 5px;
     display: flex;
-    justify-content: flex-end;
-    margin-right: 50px;
     align-items: center;
+    justify-content: flex-end;
+    width: 30%;
+    height: 60px;
+    box-sizing: border-box;
+    
+    @media screen and (min-width: $width-large) {
+      height: 80px;
+    }
 
     .duration {
-      display: flex;
-      align-items: center;
-      margin-left: 10px;
+      display: none;
+
+      @media screen and (min-width: $width-large) {
+        display: flex;
+        align-items: center;
+      }
     }
 
     .volume-control {
-      display: flex;
-      align-items: center;
-      margin-right: 10px;
-      width: 130px;
-      height: 100%;
-      font-size: 26px;
+      margin: 0 2px;
+      text-align: center;
+      font-size: 1.5em;
 
-      i {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        &:hover {
-          color: $text-hover-color;
+      @media screen and (min-width: $width-large) {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        width: 40%;
+        height: 100%;
+        font-size: 26px;
+      }
+
+      .icon {
+        @media screen and (min-width: $width-large) {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+
+          &:hover {
+            color: $text-hover-color;
+          }
         }
       }
 
       .volume-progress {
-        margin-left: 8px;
+        display: none;
+
+        @media screen and (min-width: $width-large) {
+          margin-left: 8px;
+          display: flex;
+        }
       }
     }
   }
   
-  button {
-    margin-left: 10px;
+  .btn {
+    margin: 0 3px;
     padding: 0;
+    display: inline-block;
     border: none;
     background-color: transparent;
     color: #fff;
     cursor: pointer;
-    font-size: 40px;
+    font-size: 1.5em;
     outline: none;
 
-    &:hover {
-      color: $text-hover-color;
+    @media screen and (min-width: $width-large) {
+      font-size: 2em;
+      &:hover {
+        color: $text-hover-color;
+      }
     }
   }
 

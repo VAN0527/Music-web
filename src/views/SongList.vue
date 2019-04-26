@@ -102,7 +102,7 @@ export default {
             return {
               id: item.id,
               name: item.name,
-              picUrl: item.coverImgUrl
+              picUrl: `${item.coverImgUrl}?param=400y400`
             }
           })
           this.songlist = data
@@ -146,39 +146,43 @@ export default {
 .songlist {
   .catlist-wrapper {
     position: relative;
+
     .currentCat {
-      font-size: 26px;
       margin: 10px;
+      font-size: 1.5em;
+      
       span {
         cursor: pointer;
       }
     }
+    
     .catlist {
       position: absolute;
       width: 100%;
-      background-color: rgb(20, 20, 20);
-      z-index: 10;
+      background-color: rgb(235, 235, 235);
+      z-index: 1;
 
       .categories {
         padding: 20px 10px;
-        border-bottom: 1px solid rgb(182, 182, 182);
+        border-bottom: 1px solid rgb(0, 0, 0);
         
         &:last-child {
           border-bottom: none;
         }
 
         .title {
-          font-size: 20px;
           margin-bottom: 10px;
+          font-size: 1.2em;
         }
 
         .sublist {
           display: flex;
           flex-wrap: wrap;
+
           .sublist-item {
-            padding: 5px 10px;
             margin: 5px 10px;
-            background-color: rgb(182, 182, 182);
+            padding: 5px 10px;
+            background-color: rgb(252, 251, 251);
             border-radius: 10px;
             cursor: pointer;
 

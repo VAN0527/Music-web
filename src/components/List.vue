@@ -37,18 +37,29 @@ export default {
 @import 'styles/mixin.scss';
 
 .list {
+  display: flex;
+  flex-wrap: wrap;
+
   .list-item {
     float: left;
-    width: 25%;
-    padding: 5px;
+    width: 49%;
+    margin: 0.5%;
     box-sizing: border-box;
     text-align: center;
     cursor: pointer;
-    
+
+    @media screen and (min-width: $width-medium) {
+      width: 32.3333%;
+    } 
+
+    @media screen and (min-width: $width-large) {
+      width: 24%;
+    } 
+
     .cover {
       img {
+        display: block;
         width: 100%;
-        height: 300px;
       }
     }
 
@@ -58,8 +69,10 @@ export default {
       width: 100%;
       @include no-wrap();
 
-      &:hover {
-        color: $text-hover-color;
+      @media screen and (min-width: $width-large) {
+        &:hover {
+          color: $text-hover-color;
+        }
       }
     }
   }
