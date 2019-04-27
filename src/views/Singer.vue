@@ -2,7 +2,10 @@
   <div class="singer">
     <div class="singer-info clearfix">
       <div class="cover">
-        <img v-lazy="desc.picUrl" :key="desc.picUrl">
+        <img 
+          v-lazy="desc.picUrl" 
+          :key="desc.picUrl"
+        >
       </div>
       <div class="info">
         <div class="name">
@@ -18,19 +21,23 @@
         class="tab-item"
         :class="songsActive" 
         @click="toggleTab('songs')"
-      >歌曲</span>
+      >
+        歌曲
+      </span>
       <span 
         class="tab-item" 
         :class="albumsActive"
         @click="toggleTab('albums')"
-      >专辑</span>
+      >
+        专辑
+      </span>
     </div>
     <div class="playlist" v-show="tab === 'songs'">
       <div 
         class="all-play"
-        @click="playAll"
+        @click="playAll(songs)"
       >
-        <span class="icon-bofang"></span>
+        <i class="icon-bofang"></i>
         <span> 全部播放</span>
       </div>
       <PlayList
@@ -52,8 +59,7 @@ import PlayList from 'components/PlayList.vue'
 import List from 'components/List.vue'
 import { getSingerSongsAndDesc, getSingerAlbums } from 'api/singer.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { playMode } from 'utils/config.js'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -75,9 +81,9 @@ export default {
     albumsActive () {
       return this.tab === 'albums' ? 'active' : ''
     },
-    ...mapGetters([
-      'playMode'
-    ])
+    id () {
+      return this.$route.params.id
+    }
   },
   watch: {
     '$route' () {
@@ -90,17 +96,6 @@ export default {
     this.$_getSingerAlbums()
   },
   methods: {
-    playAll () {
-      let list = [...this.songs]
-      this.setList(list)
-      if (this.playMode === playMode.random) {
-        list = shuffle(list)
-      }
-
-      this.setPlaylist(list)
-      this.setPlay(true)
-      this.setCurrentIndex(0)
-    },
     selectItem (item) {
       this.insertSong(item)
     },
@@ -111,48 +106,46 @@ export default {
       this.$router.push({
         path: `/album/${album.id}`
       })
-      this.setMusicList(album)
     },
     $_getSingerSongsAndDesc () {
-      const id = this.$route.params.id
-
-      getSingerSongsAndDesc(id).then(res => {
+      getSingerSongsAndDesc(this.id).then(res => {
         if (res.status === 200) {
           this.desc = res.data.artist
-          this.songs = this.$_normalizeSongs(res.data.hotSongs)
+          this.songs = this.$_formatSongs(res.data.hotSongs)
         }
       })
     },
     $_getSingerAlbums () {
-      const id = this.$route.params.id
-
-      getSingerAlbums(id).then(res => {
+      getSingerAlbums(this.id).then(res => {
         if (res.status === 200) {
-          this.albums = res.data.hotAlbums
+          this.albums = this.$_formatAlbum(res.data.hotAlbums)
         }
       })
     },
-    $_normalizeSongs (songs) {
+    $_formatSongs (songs) {
       return songs.map(item => {
         return {
           id: item.id,
           name: item.name,
-          picUrl: `${item.al.picUrl}?param=400y400`,
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
+          picUrl: `${item.al.picUrl}?param=400y400`,
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
         }
       })
     },
-    ...mapMutations({
-      setPlaylist: 'SET_PLAYLIST',
-      setPlay: 'SET_PLAY',
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setList: 'SET_LIST',
-      setMusicList: 'SET_MUSIC_LIST'
-    }),
+    $_formatAlbum (albums) {
+      return albums.map(album => {
+        return {
+          id: album.id,
+          name: album.name,
+          picUrl: `${album.picUrl}?param=400y400`
+        }
+      })
+    },
     ...mapActions([
-      'insertSong'
+      'insertSong',
+      'playAll'
     ])
   }
 }
