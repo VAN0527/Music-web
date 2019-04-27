@@ -21,7 +21,7 @@ export default {
       artists: []
     }
   },
-  mounted () {
+  created () {
     this.$_getSearchResult()
   },
   methods: {

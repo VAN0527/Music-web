@@ -20,7 +20,7 @@ export default {
       songlist: []
     }
   },
-  mounted () {
+  created () {
     this.$_getSearchResult()
   },
   methods: {
@@ -28,7 +28,6 @@ export default {
       this.$router.push({
         path: `/musiclist/${songlist.id}`
       })
-      //this.setMusicList(songlist)
     },
     $_getSearchResult () {
       const query = this.$route.query
@@ -37,13 +36,16 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.songlist = res.data.result.playlists.map(playlist => {
-            return {
-              id: playlist.id,
-              name: playlist.name,
-              picUrl: `${playlist.coverImgUrl}?param=400y400`
-            }
-          })
+          this.songlist = this.$_formatList(res.data.result.playlists)
+        }
+      })
+    },
+    $_formatList (list) {
+      return list.map(item => {
+        return {
+          id: playlist.id,
+          name: playlist.name,
+          picUrl: `${playlist.coverImgUrl}?param=400y400`
         }
       })
     }
