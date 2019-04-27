@@ -6,16 +6,16 @@
     <div 
       class="suggest-item"
       v-for="suggest in suggests"
-      :key="suggest.cat"
+      :key="suggest.category"
       v-show="suggests.length > 0"
     >
       <div class="cat">
-        <div class="cat-title">{{suggest.cat}}</div>
+        <div class="cat-title">{{suggest.category}}</div>
         <div
           class="cat-result" 
           v-for="item in suggest.result"
           :key="item.id"
-          @click.stop="selectItem(item.id, suggest.cat)"
+          @click.stop="selectItem(item.id, suggest.category)"
         >
           {{item.name}}
         </div>
@@ -27,7 +27,6 @@
 <script>
 import { mapActions } from 'vuex'
 import { getSearchSuggest } from 'api/search.js'
-import { debounce } from 'utils/common.js'
 import { getSong } from 'api/song.js'
 import { searchCat } from 'utils/config.js'
 import { formatArtists, formatDuration } from 'utils/song.js'
@@ -48,25 +47,13 @@ export default {
     keyword (newKeyword) {
       if (newKeyword) {
         this.suggests = []
-        getSearchSuggest(newKeyword).then(res => {
-          if (res.status === 200) {
-            let suggests = []
-            if (!res.data.result.order) return
-            res.data.result.order.forEach(item => {
-              suggests.push({
-                cat: searchCat[item],
-                result: res.data.result[item]
-              })
-            })
-            this.suggests = suggests
-          }
-        })
+        this.$_getSearchSuggest(newKeyword)
       }
     }
   },
   methods: {
-    selectItem (id, cat) {
-      switch (cat) {
+    selectItem (id, category) {
+      switch (category) {
         case '歌手':
           this.$_selectArtist(id)
           break
@@ -100,19 +87,37 @@ export default {
       })
     },
     $_selectSong (id) {
-      let song = {}
       return getSong(id).then(res => {
         if (res.status === 200) {
-          const data = res.data.songs[0]
-          const song = {
-            id: data.id,
-            name: data.name,
-            artists: formatArtists(data.ar),
-            duration: formatDuration(data.dt),
-            picUrl: data.al.picUrl,
-            url: `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`
-          }
-          return song
+          return this.$_formatSong(res.data.songs[0])
+        }
+      })
+    },
+    $_getSearchSuggest (keyword) {
+      getSearchSuggest(keyword).then(res => {
+        if (res.status === 200) {
+          if (!res.data.result.order) return
+          const categories = res.data.result.order
+          const suggests = res.data.result
+          this.suggests = this.$_formatSuggests(categories, suggests)
+        }
+      })
+    },
+    $_formatSong (song) {
+      return {
+        id: song.id,
+        name: song.name,
+        artists: formatArtists(song.ar),
+        duration: formatDuration(song.dt),
+        picUrl: `${song.al.picUrl}?param=400y400`,
+        url: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+      }
+    },
+    $_formatSuggests (categories, suggests) {
+      return categories.map(category => {
+        return {
+          category: searchCat[category],
+          result: suggests[category]
         }
       })
     },
