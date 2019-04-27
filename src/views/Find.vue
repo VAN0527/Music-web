@@ -39,8 +39,7 @@ import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
 import { getBanner, getRecommend, getNewMusic, getHotSingers } from 'api/find.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapGetters, mapActions } from 'vuex'
-import { playMode } from 'utils/config.js'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -56,11 +55,6 @@ export default {
       newMusic: [],
       loading: true
     }
-  },
-  computed: {
-    ...mapGetters([
-      'playMode'
-    ])
   },
   created () {
     this.$_getData()

@@ -19,7 +19,7 @@ export const insertSong = function ({ commit, state }, song) {
   playlist.splice(currentIndex, 0, song)
   // 移除重复歌曲
   if (fIndex > -1) {
-    if (fIndex > currentIndex) {
+    if (fIndex >= currentIndex) {
       playlist.splice(fIndex + 1, 1)
     } else {
       playlist.splice(fIndex, 1)
@@ -32,7 +32,7 @@ export const insertSong = function ({ commit, state }, song) {
   list.splice(listIndex, 0, song)
 
   if (fListIndex > -1) {
-    if (fListIndex > listIndex) {
+    if (fListIndex >= listIndex) {
       list.splice(fListIndex + 1, 1)
     } else {
       list.splice(fListIndex, 1)

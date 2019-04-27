@@ -3,29 +3,31 @@
     <div class="list-info clearfix">
       <div class="cover">
         <img 
-          v-lazy="coverImg" 
-          :key="coverImg"
+          v-lazy="data.picUrl" 
+          :key="data.picUrl"
         >
       </div>
       <div class="info">
-        <h2 class="title">{{title}}</h2>
-        <p class="creater">{{creator}}</p>
+        <h2 class="title">{{data.title}}</h2>
+        <p class="creater">{{data.creator}}</p>
         <div class="btns">
           <div 
             class="btn"
-            @click="playAll"
+            @click.stop="playAll(data.songs)"
           >
-            <i class="icon-bofang"></i> 全部播放
+            <i class="icon-bofang"></i>
+            <span>全部播放</span>
           </div>
           <div class="btn">
-            <i class="icon-shoucang"></i> 收藏
+            <i class="icon-shoucang"></i>
+            <span>收藏</span>
           </div>
         </div>
       </div>
     </div>
     <div class="playlist">
       <PlayList
-        :list="songs" 
+        :list="data.songs" 
         @select="selectItem"
       ></PlayList>
       <Loading :loading="loading"></Loading>
@@ -36,11 +38,9 @@
 <script>
 import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { getMusicList, getAlbumSongs } from 'api/musiclist.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { playMode } from 'utils/config.js'
-import { shuffle } from 'utils/common.js'
 
 export default {
   components: {
@@ -55,77 +55,61 @@ export default {
   },
   data () {
     return {
-      songs: [],
-      creator: '',
-      coverImg: '',
-      title: '',
+      data: {},
       loading: true
     }
   },
-  mounted () {
-    if (this.albums) {
-      this.$_getAlbumSongs()
-    } else {
-      this.$_getMusicList()
+  computed: {
+    id () {
+      return this.$route.params.id
     }
   },
-  computed: {
-    ...mapGetters([
-      'musicList',
-      'playlist',
-      'list',
-      'playMode'
-    ])
+  created () {
+    this.$_getData()
   },
   watch: {
     '$route' () {
-      if (this.albums) {
-        this.$_getAlbumSongs()
-      } else {
-        this.$_getMusicList()
-      }
+      this.$_getData()
     }
   },
   methods: {
-    playAll () {
-      let list = [...this.songs]
-      this.setList(list)
-      if (this.playMode === playMode.random) {
-        list = shuffle(list)
-      }
-
-      this.setPlaylist(list)
-      this.setPlay(true)
-      this.setCurrentIndex(0)
-    },
-    selectItem (item) {
-      this.insertSong(item)
+    selectItem (song) {
+      this.insertSong(song)
     },
     $_getMusicList () {
-      const id = this.$route.params.id
-      getMusicList(id).then(res => {
+      getMusicList(this.id).then(res => {
         if (res.status === 200) {
-          const data = res.data.playlist
-          this.songs = this.$_formatSong(data.tracks)
-          this.creator = data.creator.nickname
-          this.coverImg = `${data.coverImgUrl}?param=600y600`
-          this.title = data.name
+          const musiclist = res.data.playlist
+          this.data = this.$_formatMusicList(musiclist)
           this.loading = false
         }
       })
     },
     $_getAlbumSongs () {
-      const id = this.$route.params.id
-      getAlbumSongs(id).then(res => {
+      getAlbumSongs(this.id).then(res => {
         if (res.status === 200) {
-          const data = res.data
-          this.songs = this.$_formatSong(data.songs)
-          this.coverImg = `${data.album.picUrl}?param=600y600`
-          this.title = data.album.name
-          this.creator = data.album.artist.name
+          const album = res.data
+          this.data = this.$_formatAlbum(album)
           this.loading = false
         }
       })
+    },
+    $_formatMusicList (musiclist) {
+      return {
+        songs: this.$_formatSong(musiclist.tracks),
+        title: musiclist.name,
+        creator: musiclist.creator.nickname,
+        picUrl: `${musiclist.coverImgUrl}?param=400y400`,
+      }
+    },
+    $_formatAlbum (album) {
+      return {
+        id: album.id,
+        title: album.album.name,
+        creator: album.album.artist.name,
+        picUrl: `${album.album.picUrl}?param=400y400`,
+        songs: this.$_formatSong(album.songs),
+      }
     },
     $_formatSong (list) {
       return list.map(item => {
@@ -134,19 +118,21 @@ export default {
           name: item.name,
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
-          picUrl: `${item.al.picUrl}?param=600y600`,
+          picUrl: `${item.al.picUrl}?param=400y400`,
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3` 
         }
       })
     },
-    ...mapMutations({
-      setPlaylist: 'SET_PLAYLIST',
-      setPlay: 'SET_PLAY',
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setList: 'SET_LIST'
-    }),
+    $_getData () {
+      if (this.albums) {
+        this.$_getAlbumSongs()
+      } else {
+        this.$_getMusicList()
+      }
+    },
     ...mapActions([
-      'insertSong'
+      'insertSong',
+      'playAll'
     ])
   }
 }
