@@ -37,13 +37,16 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.artists = res.data.result.artists.map(artist => {
-            return {
-              id: artist.id,
-              picUrl: `${artist.img1v1Url}?param=400y400`,
-              name: artist.name
-            }
-          })
+          this.artists = this.$_formatArtists(res.data.result.artists)
+        }
+      })
+    },
+    $_formatArtists (artists) {
+      return artists.map(artist => {
+        return {
+          id: artist.id,
+          name: artist.name,
+          picUrl: `${artist.img1v1Url}?param=400y400`
         }
       })
     }
