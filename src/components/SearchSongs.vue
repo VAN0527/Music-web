@@ -63,7 +63,7 @@ export default {
       this.$_getSearchResult()
     }
   },
-  mounted () {
+  created () {
     this.$_getSearchResult()
   },
   methods: {
@@ -79,36 +79,40 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.songs = res.data.result.songs.map(song => {
-            return {
-              id: song.id,
-              name: song.name,
-              duration: formatDuration(song.duration),
-              artists: formatArtists(song.artists),
-              album: {
-                id: song.album.id,
-                name: song.album.name
-              }
-            }
-          })
+          this.songs = this.$_formatSongList(res.data.result.songs)
         }
       })
     },
     $_getSong (id) {
       return getSong(id).then(res => {
         if (res.status === 200) {
-          const data = res.data.songs[0]
-          const song = {
-            id: data.id,
-            name: data.name,
-            artists: formatArtists(data.ar),
-            duration: formatDuration(data.dt),
-            picUrl: `${data.al.picUrl}?param=600y600`,
-            url: `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`
-          }
-          return song
+          return this.$_formatSong(res.data.songs[0])
         }
       })
+    },
+    $_formatSongList (list) {
+      return list.map(item => {
+        return {
+          id: item.id,
+          name: item.name,
+          duration: formatDuration(item.duration),
+          artists: formatArtists(item.artists),
+          album: {
+            id: item.album.id,
+            name: item.album.name
+          }
+        }
+      })
+    },
+    $_formatSong (song) {
+      return {
+        id: song.id,
+        name: song.name,
+        artists: formatArtists(song.ar),
+        duration: formatDuration(song.dt),
+        picUrl: `${song.al.picUrl}?param=400y400`,
+        url: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+      }
     },
     ...mapActions([
       'insertSong'

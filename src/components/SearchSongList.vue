@@ -43,9 +43,9 @@ export default {
     $_formatList (list) {
       return list.map(item => {
         return {
-          id: playlist.id,
-          name: playlist.name,
-          picUrl: `${playlist.coverImgUrl}?param=400y400`
+          id: item.id,
+          name: item.name,
+          picUrl: `${item.coverImgUrl}?param=400y400`
         }
       })
     }
