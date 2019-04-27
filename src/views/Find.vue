@@ -16,7 +16,7 @@
         <div class="playlist">
           <div 
             class="all-play"
-            @click="playAll"
+            @click="playAll(newMusic)"
           >
             <i class="icon-bofang"></i>
             <span> 全部播放</span>
@@ -39,7 +39,7 @@ import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
 import { getBanner, getRecommend, getNewMusic, getHotSingers } from 'api/find.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapGetters ,mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { playMode } from 'utils/config.js'
 
 export default {
@@ -70,30 +70,15 @@ export default {
       this.$router.push({
         path: `/musiclist/${item.id}`
       })
-      this.setMusicList(item)
     },
     selectItem (item) {
       this.insertSong(item)
     },
-    playAll () {
-      let list = [...this.newMusic]
-      this.setList(list)
-      if (this.playMode === playMode.random) {
-        list = shuffle(list)
-      }
-
-      this.setPlaylist(list)
-      this.setPlay(true)
-      this.setCurrentIndex(0)
-    },
     $_getBanner () {
       getBanner().then(res => {
         if (res.status === 200) {
-          this.banners = res.data.banners.map(banner => {
-            return {
-              imageUrl: `${banner.imageUrl}?param=1000y300`
-            }
-          })
+          const banners = [...res.data.banners]
+          this.banners = this.$_formatBanner(banners)
         }
       })
     },
@@ -108,18 +93,27 @@ export default {
     $_getNewMusic () {
       getNewMusic().then(res => {
         if (res.status === 200) {
-          const data = res.data.result.slice()
-          let newMusic = data.map(item => {
-            return {
-              id: item.id,
-              name: item.name,
-              duration: formatDuration(item.song.duration),
-              artists: formatArtists(item.song.artists),
-              picUrl: `${item.song.album.picUrl}?param=600y600`,
-              url:`https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
-            }
-          })
-          this.newMusic = newMusic
+          const songs = [...res.data.result]
+          this.newMusic = this.$_formatSong(songs)
+        }
+      })
+    },
+    $_formatSong (songs) {
+      return songs.map(song => {
+        return {
+          id: song.id,
+          name: song.name,
+          duration: formatDuration(song.song.duration),
+          artists: formatArtists(song.song.artists),
+          picUrl: `${song.song.album.picUrl}?param=400y400`,
+          url:`https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+        }
+      })
+    },
+    $_formatBanner (banners) {
+      return banners.map(banner => {
+        return {
+          imageUrl: `${banner.imageUrl}?param=1000y300`
         }
       })
     },
@@ -128,15 +122,9 @@ export default {
       this.$_getRecommend()
       this.$_getNewMusic()
     },
-    ...mapMutations({
-      setPlaylist: 'SET_PLAYLIST',
-      setPlay: 'SET_PLAY',
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setList: 'SET_LIST',
-      setMusicList: 'SET_MUSIC_LIST'
-    }),
     ...mapActions([
-      'insertSong'
+      'insertSong',
+      'playAll'
     ])
   }
 }
