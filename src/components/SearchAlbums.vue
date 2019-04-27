@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import { getSearchResult } from 'api/search.js'
 import List from 'components/List'
+import { getSearchResult } from 'api/search.js'
+import { formatAlbums } from 'utils/song.js'
 
 export default {
   components: {
@@ -20,7 +21,7 @@ export default {
       albums: []
     }
   },
-  mounted () {
+  created () {
     this.$_getSearchResult()
   },
   methods: {
@@ -36,14 +37,7 @@ export default {
 
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
-          this.albums = res.data.result.albums.map(album => {
-            return {
-              id: album.id,
-              name: album.name,
-              artist: album.artist,
-              picUrl: `${album.picUrl}?param=400y400`
-            }
-          })
+          this.albums = formatAlbums(res.data.result.albums)
         }
       })
     }
@@ -52,9 +46,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'styles/variable.scss';
-@import 'styles/mixin.scss';
-
 .albums {
   margin-top: 1em;
 }

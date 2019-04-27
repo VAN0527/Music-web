@@ -58,7 +58,7 @@
 import PlayList from 'components/PlayList.vue'
 import List from 'components/List.vue'
 import { getSingerSongsAndDesc, getSingerAlbums } from 'api/singer.js'
-import { formatDuration, formatArtists } from 'utils/song.js'
+import { formatDuration, formatArtists, formatAlbums } from 'utils/song.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -118,7 +118,7 @@ export default {
     $_getSingerAlbums () {
       getSingerAlbums(this.id).then(res => {
         if (res.status === 200) {
-          this.albums = this.$_formatAlbum(res.data.hotAlbums)
+          this.albums = formatAlbums(res.data.hotAlbums)
         }
       })
     },
@@ -131,15 +131,6 @@ export default {
           duration: formatDuration(item.dt),
           picUrl: `${item.al.picUrl}?param=400y400`,
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
-        }
-      })
-    },
-    $_formatAlbum (albums) {
-      return albums.map(album => {
-        return {
-          id: album.id,
-          name: album.name,
-          picUrl: `${album.picUrl}?param=400y400`
         }
       })
     },

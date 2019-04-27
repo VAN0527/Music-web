@@ -17,3 +17,13 @@ export function formatArtists (artists) {
     }
   })
 }
+
+export function formatAlbums (albums) {
+  return albums.map(album => {
+    return {
+      id: album.id,
+      name: album.name,
+      picUrl: `${album.picUrl}?param=400y400`
+    }
+  })
+}
