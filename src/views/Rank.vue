@@ -1,9 +1,9 @@
 <template>
   <div class="rank">
-    <div class="songlist-rank-wrapper clearfix">
+    <div class="ranklist-wrapper clearfix">
       <div 
-        class="songlist-rank-item clearfix" 
-        v-for="item in songlistRank"
+        class="ranklist-item clearfix" 
+        v-for="item in rankList"
         :key="item.id"
       >
         <div
@@ -29,15 +29,15 @@
 
 <script>
 import { getRanklistDetail } from 'api/rank.js'
-import { mapMutations } from 'vuex'
 import Loading from 'components/Loading'
+
 export default {
   components: {
     Loading
   },
   data () {
     return {
-      songlistRank: [],
+      rankList: [],
       loading: true
     }
   },
@@ -49,20 +49,15 @@ export default {
       this.$router.push({
         path: `/musiclist/${item.id}`
       })
-      this.setMusicList(item)
     },
     $_getRanklistDetail () {
       getRanklistDetail().then(res => {
         if (res.status === 200) {
-          let list = res.data.list.slice(0, 4)
-          this.songlistRank = list
+          this.rankList = res.data.list.slice(0, 4)
           this.loading = false
         }
       })
-    },
-    ...mapMutations({
-       setMusicList: 'SET_MUSIC_LIST'
-    })
+    }
   }
 }
 </script>
@@ -74,10 +69,10 @@ export default {
 .rank {
   position: relative;
 
-  .songlist-rank-wrapper {
+  .ranklist-wrapper {
     margin-top: 20px;
 
-    .songlist-rank-item {
+    .ranklist-item {
       padding: 10px;
       width: 100%;
       box-sizing: border-box;
