@@ -1,9 +1,6 @@
 import * as types from './mutations-types'
 
 const mutations = {
-  [types.SET_MUSIC_LIST] (state, musicList) {
-    state.musicList = musicList
-  },
   [types.SET_PLAY] (state, isPlay) {
     state.isPlay = isPlay
   },

@@ -1,5 +1,3 @@
-export const musicList = state => state.musicList
-
 export const isPlay = state => state.isPlay
 
 export const playlist = state => state.playlist

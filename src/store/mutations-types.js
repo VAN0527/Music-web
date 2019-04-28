@@ -1,5 +1,3 @@
-export const SET_MUSIC_LIST = 'SET_MUSIC_LIST'
-
 export const SET_PLAY = 'SET_PLAY'
 
 export const SET_PLAYLIST = 'SET_PLAYLIST'

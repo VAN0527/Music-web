@@ -1,7 +1,6 @@
 import { playMode } from 'utils/config.js'
 
 const state = {
-  musicList: [],
   isPlay: false,
   playlist: [],
   list: [],
