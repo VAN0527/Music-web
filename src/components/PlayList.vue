@@ -38,9 +38,11 @@ export default {
       this.$emit('select', item)
     },
     selectArtist (artist) {
-      const id = artist.id
       this.$router.push({
-        path: `/singer/${id}`
+        path: '/singer/songs',
+        query: {
+          id: artist.id
+        }
       })
     }
   }

@@ -246,7 +246,10 @@ export default {
     },
     selectArtist (artist) {
       this.$router.push({
-        path: `/singer/${artist.id}`
+        path: '/singer/songs',
+        query: {
+          id: artist.id
+        }
       })
     },
     toPlaylist () {

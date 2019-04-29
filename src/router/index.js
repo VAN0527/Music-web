@@ -5,6 +5,8 @@ import SongList from 'views/SongList'
 import Rank from 'views/Rank'
 import MusicList from 'views/MusicList'
 import Singer from 'views/Singer'
+import SingerSongs from 'components/SingerSongs'
+import SingerAlbums from 'components/SingerAlbums'
 import SearchResult from 'views/SearchResult'
 import SearchSongs from 'components/SearchSongs'
 import SearchAlbums from 'components/SearchAlbums'
@@ -46,8 +48,19 @@ export default new Router({
       component: Rank
     },
     {
-      path: '/singer/:id',
-      component: Singer
+      path: '/singer',
+      component: Singer,
+      redirect: '/singer/songs',
+      children: [
+        {
+          path: 'songs',
+          component: SingerSongs
+        },
+        {
+          path: 'albums',
+          component: SingerAlbums
+        }
+      ]
     },
     {
       path: '/search',
