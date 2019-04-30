@@ -1,6 +1,6 @@
 <template>
   <div class="rank">
-    <div class="ranklist-wrapper clearfix">
+    <div class="ranklist-wrapper clearfix" v-show="!loading">
       <div 
         class="ranklist-item clearfix" 
         v-for="item in rankList"
@@ -67,8 +67,6 @@ export default {
 @import 'styles/mixin.scss';
 
 .rank {
-  position: relative;
-
   .ranklist-wrapper {
     margin-top: 20px;
 

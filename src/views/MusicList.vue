@@ -1,37 +1,39 @@
 <template>
   <div class="musiclist">
-    <div class="list-info clearfix">
-      <div class="cover">
-        <img 
-          v-lazy="data.picUrl" 
-          :key="data.picUrl"
-        >
-      </div>
-      <div class="info">
-        <h2 class="title">{{data.title}}</h2>
-        <p class="creater">{{data.creator}}</p>
-        <div class="btns">
-          <div 
-            class="btn"
-            @click.stop="playAll(data.songs)"
+    <div class="musiclist-wrapper" v-show="!loading">
+      <div class="list-info clearfix">
+        <div class="cover">
+          <img 
+            v-lazy="data.picUrl" 
+            :key="data.picUrl"
           >
-            <i class="icon-bofang"></i>
-            <span>全部播放</span>
-          </div>
-          <div class="btn">
-            <i class="icon-shoucang"></i>
-            <span>收藏</span>
+        </div>
+        <div class="info">
+          <h2 class="title">{{data.title}}</h2>
+          <p class="creater">{{data.creator}}</p>
+          <div class="btns">
+            <div 
+              class="btn"
+              @click.stop="playAll(data.songs)"
+            >
+              <i class="icon-bofang"></i>
+              <span>全部播放</span>
+            </div>
+            <div class="btn">
+              <i class="icon-shoucang"></i>
+              <span>收藏</span>
+            </div>
           </div>
         </div>
       </div>
+      <div class="playlist">
+        <PlayList
+          :list="data.songs" 
+          @select="selectItem"
+        ></PlayList>
+      </div>
     </div>
-    <div class="playlist">
-      <PlayList
-        :list="data.songs" 
-        @select="selectItem"
-      ></PlayList>
-      <Loading :loading="loading"></Loading>
-    </div>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 
@@ -186,10 +188,6 @@ export default {
         }
       }
     }
-  }
-
-  .playlist {
-    position: relative;
   }
 }
 </style>

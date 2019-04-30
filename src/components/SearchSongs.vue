@@ -43,19 +43,25 @@
         </div>
       </li>
     </ul>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 
 <script>
+import Loading from 'components/Loading'
 import { getSearchResult } from 'api/search.js'
 import { getSong } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'
 
 export default {
+  components: {
+    Loading
+  },
   data () {
     return {
-      songs: []
+      songs: [],
+      loading: true
     }
   },
   watch: {
@@ -80,6 +86,7 @@ export default {
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
           this.songs = this.$_formatSongList(res.data.result.songs)
+          this.loading = false
         }
       })
     },

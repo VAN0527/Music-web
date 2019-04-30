@@ -1,34 +1,36 @@
 <template>
   <div class="find">
-    <div class="banner">
-      <Swiper :data="banners"></Swiper>
-    </div>
-    <div class="recommend">
-      <div class="recommend-list-wrapper">
-        <h2 class="title">推荐歌单</h2>
-        <List
-          :list="recommend"
-          @select="selectRecommend"
-        ></List>
+    <div class="find-wrapper" v-show="!loading">
+      <div class="banner">
+        <Swiper :data="banners"></Swiper>
       </div>
-      <div class="newmusic-wrapper">
-        <h2 class="title">新歌推荐</h2>
-        <div class="playlist">
-          <div 
-            class="all-play"
-            @click="playAll(newMusic)"
-          >
-            <i class="icon-bofang"></i>
-            <span> 全部播放</span>
+      <div class="recommend">
+        <div class="recommend-list-wrapper">
+          <h2 class="title">推荐歌单</h2>
+          <List
+            :list="recommend"
+            @select="selectRecommend"
+          ></List>
+        </div>
+        <div class="newmusic-wrapper">
+          <h2 class="title">新歌推荐</h2>
+          <div class="playlist">
+            <div 
+              class="all-play"
+              @click="playAll(newMusic)"
+            >
+              <i class="icon-bofang"></i>
+              <span> 全部播放</span>
+            </div>
+            <PlayList 
+              :list="newMusic"
+              @select="selectItem"
+            ></PlayList>
           </div>
-          <PlayList 
-            :list="newMusic"
-            @select="selectItem"
-          ></PlayList>
         </div>
       </div>
-      <Loading :loading="loading"></Loading>
     </div>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 

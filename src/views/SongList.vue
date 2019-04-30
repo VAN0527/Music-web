@@ -3,13 +3,13 @@
     <div class="catlist-wrapper">
       <SongListCategory @select="selectItem"></SongListCategory>
     </div>
-    <div class="songlist-wrapper">
+    <div class="songlist-wrapper" v-show="!loading">
       <List 
         :list="songlist" 
         @select="selectSongList"
       ></List>
-      <Loading :loading="loading"></Loading>
     </div>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 
@@ -64,12 +64,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.songlist {
-  .songlist-wrapper {
-    position: relative;
-  }
-}
-</style>
-

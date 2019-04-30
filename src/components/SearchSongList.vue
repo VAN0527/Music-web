@@ -3,21 +3,26 @@
     <List
       :list="songlist"
       @select="selectSongList"
+      v-show="!this.loading"
     ></List>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 
 <script>
 import List from 'components/List'
+import Loading from 'components/Loading'
 import { getSearchResult } from 'api/search.js'
 
 export default {
   components: {
-    List
+    List,
+    Loading
   },
   data () {
     return {
-      songlist: []
+      songlist: [],
+      loading: true
     }
   },
   created () {
@@ -37,6 +42,7 @@ export default {
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
           this.songlist = this.$_formatList(res.data.result.playlists)
+          this.loading = false
         }
       })
     },

@@ -2,6 +2,7 @@
   <div class="artists clearfix">
     <div 
       class="artist-item"
+      v-show="!loading"
       v-for="artist in artists"
       :key="artist.id"
       @click="selectArtist(artist.id)"
@@ -9,16 +10,22 @@
       <img class="pic" :src="artist.picUrl">
       <span class="name">{{artist.name}}</span>
     </div>
+    <Loading :loading="loading"></Loading>
   </div>
 </template>
 
 <script>
+import Loading from 'components/Loading'
 import { getSearchResult } from 'api/search.js'
 
 export default {
+  components: {
+    Loading
+  },
   data () {
     return {
-      artists: []
+      artists: [],
+      loading: true
     }
   },
   created () {
@@ -38,6 +45,7 @@ export default {
       getSearchResult(keyword, type).then(res => {
         if (res.status === 200) {
           this.artists = this.$_formatArtists(res.data.result.artists)
+          this.loading = false
         }
       })
     },

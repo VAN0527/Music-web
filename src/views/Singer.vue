@@ -1,50 +1,57 @@
 <template>
   <div class="singer">
-    <div class="singer-info clearfix">
-      <div class="cover">
-        <img 
-          v-lazy="desc.picUrl" 
-          :key="desc.picUrl"
+    <div class="singer-wrapper" v-show="!loading">
+      <div class="singer-info clearfix">
+        <div class="cover">
+          <img 
+            v-lazy="desc.picUrl" 
+            :key="desc.picUrl"
+          >
+        </div>
+        <div class="info">
+          <div class="name">
+            {{desc.name}}
+          </div>
+          <div class="desc">
+            简介: {{desc.briefDesc}}
+          </div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <span
+          class="tab-item"
+          :class="songsActive" 
+          @click="toggleTab('songs')"
         >
+          歌曲
+        </span>
+        <span 
+          class="tab-item" 
+          :class="albumsActive"
+          @click="toggleTab('albums')"
+        >
+          专辑
+        </span>
       </div>
-      <div class="info">
-        <div class="name">
-          {{desc.name}}
-        </div>
-        <div class="desc">
-          简介: {{desc.briefDesc}}
-        </div>
-      </div>
+      <router-view></router-view>
     </div>
-    <div class="tab-bar">
-      <span
-        class="tab-item"
-        :class="songsActive" 
-        @click="toggleTab('songs')"
-      >
-        歌曲
-      </span>
-      <span 
-        class="tab-item" 
-        :class="albumsActive"
-        @click="toggleTab('albums')"
-      >
-        专辑
-      </span>
-    </div>
-    <router-view></router-view>
+    <Loading :loading="this.loading"></Loading>
   </div>
 </template>
 
 <script>
+import Loading from 'components/Loading'
 import { getSingerSongsAndDesc } from 'api/singer.js'
 
-
 export default {
+  components: {
+    Loading
+  },
   data () {
     return {
       desc: [],
-      tab: 'songs'
+      tab: 'songs',
+      loading: true
     }
   },
   computed: {
@@ -77,6 +84,7 @@ export default {
       getSingerSongsAndDesc(this.$route.query.id).then(res => {
         if (res.status === 200) {
           this.desc = res.data.artist
+          this.loading = false
         }
       })
     }
