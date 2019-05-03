@@ -8,7 +8,7 @@
         >
       </div>
       <div class="music-text" v-if="currentSong">
-        <span>{{currentSong.name}}</span>
+        <span @click="selectName">{{currentSong.name}}</span>
         <div class="artists">
           <span
             class="artists-item"
@@ -249,6 +249,14 @@ export default {
         path: '/singer/songs',
         query: {
           id: artist.id
+        }
+      })
+    },
+    selectName () {
+      this.$router.push({
+        path: '/songdetail',
+        query: {
+          id: this.currentSong.id
         }
       })
     },

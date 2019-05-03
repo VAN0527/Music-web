@@ -71,7 +71,8 @@ html, body {
 
   .main {
     height: 100vh;
-
+    position: relative;
+    
     @media screen and (min-width: $width-medium) {
       overflow: auto;
       margin-left: 10%;

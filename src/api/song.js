@@ -6,3 +6,15 @@ export function getSong (id) {
 
   return axios.get(url)
 }
+
+export function getLyric (id) {
+  const url = `${HOST}/lyric?id=${id}`
+
+  return axios.get(url)
+}
+
+export function getComment (id) {
+  const url = `${HOST}/comment/music?id=${id}`
+
+  return axios.get(url)
+}

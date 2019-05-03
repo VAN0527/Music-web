@@ -13,6 +13,7 @@ import SearchAlbums from 'components/SearchAlbums'
 import SearchArtists from 'components/SearchArtists'
 import SearchSongList from 'components/SearchSongList'
 import PlayerPlayList from 'components/PlayerPlayList'
+import SongDetail from 'views/SongDetail'
 
 Vue.use(Router)
 
@@ -88,6 +89,10 @@ export default new Router({
     {
       path: '/playlist',
       component: PlayerPlayList
+    },
+    {
+      path: '/songdetail',
+      component: SongDetail
     }
   ],
   scrollBehavior (to, from, savedPosition) {
