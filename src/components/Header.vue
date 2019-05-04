@@ -22,7 +22,7 @@ export default {
 @import 'styles/variable.scss';
 
 .header {
-  height: 40px;
+  height: 50px;
   border-bottom: 1px solid #000;
   
   @media screen and (min-width: $width-medium) {
@@ -45,10 +45,9 @@ export default {
   .user {
     float: left;
     width: 20%;
-    height: 40px;
-    line-height: 40px;
+    line-height: 50px;
     text-align: center;
-    font-size: 2em;
+    font-size: 2.5em;
 
     @media screen and (min-width: $width-medium) {
       float: right;

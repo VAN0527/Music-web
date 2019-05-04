@@ -73,7 +73,10 @@ export default {
     },
     $_selectArtist (id) {
       this.$router.push({
-        path: `/singer/${id}`
+        path: `/singer`,
+        query: {
+          id
+        }
       })
     },
     $_selectAlbums (id) {
@@ -114,12 +117,16 @@ export default {
       }
     },
     $_formatSuggests (categories, suggests) {
-      return categories.map(category => {
-        return {
-          category: searchCat[category],
-          result: suggests[category]
-        }
-      })
+      const keys = Object.keys(searchCat)
+      return categories
+        // 筛选分类
+        .filter(category => keys.includes(category))
+        .map(category => {
+          return {
+            category: searchCat[category],
+            result: suggests[category]
+          }
+        })
     },
     ...mapActions([
       'insertSong'
@@ -129,6 +136,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'styles/variable.scss';
 @import 'styles/mixin.scss';
 
 .suggest {
@@ -136,6 +144,7 @@ export default {
   color: #000;
   border-radius: 5px;
   padding: 5px 5px;
+  box-shadow: 0 0 16px rgb(94, 94, 94);
 
   .suggest-item {
     padding: 5px 0;
@@ -147,7 +156,7 @@ export default {
 
     .cat {
       .cat-title {
-        font-size: 18px;
+        font-size: 1.2em;
         font-weight: bold;
       }
 
@@ -157,8 +166,8 @@ export default {
         @include no-wrap;
         
         &:hover {
-          background: #000;
-          color: #fff;
+          background: $hover-bg-color;
+          color: $text-hover-color;
         }
       }
     }

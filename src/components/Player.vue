@@ -5,10 +5,11 @@
         <img 
           v-lazy="currentSong.picUrl" 
           :key="currentSong.picUrl"
+          @click="selectSong"
         >
       </div>
       <div class="music-text" v-if="currentSong">
-        <span @click="selectName">{{currentSong.name}}</span>
+        <span @click="selectSong">{{currentSong.name}}</span>
         <div class="artists">
           <span
             class="artists-item"
@@ -252,7 +253,7 @@ export default {
         }
       })
     },
-    selectName () {
+    selectSong () {
       this.$router.push({
         path: '/songdetail',
         query: {
