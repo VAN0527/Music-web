@@ -79,15 +79,7 @@ export default {
 
   .search-box {
     position: relative;
-    margin-left: 10px;
-    height: 50px;
-    line-height: 50px;
     font-size: 1em;
-
-    @media screen and (min-width: $width-medium) {
-      height: 60px;
-      line-height: 60px;
-    }
 
     .search-icon {
       position: absolute;
@@ -98,26 +90,20 @@ export default {
 
     input {
       box-sizing: border-box;
-      padding: 5px 2px 5px 2em;
-      width: 100%;
+      padding: 2px 2px 2px 1.7em;
+      height: 30px;
+      width: 250px;
+      line-height: 30px;
       border: none;
       border-radius: 999999999px;
       background-color: rgb(241, 240, 240);
       outline: none;
-      font-size: 1.2em;
-
-      @media screen and (min-width: $width-medium) {
-        height: 45px;
-        width: 250px;
-        line-height: 45px;
-        font-size: 1em;
-      }
     }
   }
 
   .suggests {
     position: absolute;
-    left: 4px;
+    top: 50px;
     width: 100%;
     z-index: 10;
   }

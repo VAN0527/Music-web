@@ -1,9 +1,11 @@
 <template>
   <div class="find">
-    <div class="find-wrapper" v-show="!loading">
+    <div class="banner-wrapper">
       <div class="banner">
-        <Swiper :data="banners"></Swiper>
+        <VueEasySlider :data="banners"></VueEasySlider>
       </div>
+    </div>
+    <div class="find-wrapper" v-show="!loading">
       <div class="recommend">
         <div class="recommend-list-wrapper">
           <h2 class="title">推荐歌单</h2>
@@ -35,7 +37,7 @@
 </template>
 
 <script>
-import Swiper from 'components/Swiper'
+import VueEasySlider from 'components/VueEasySlider'
 import List from 'components/List'
 import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
@@ -45,7 +47,7 @@ import { mapActions } from 'vuex'
 
 export default {
   components: {
-    Swiper,
+    VueEasySlider,
     List,
     Loading,
     PlayList
@@ -131,46 +133,53 @@ export default {
 @import 'styles/mixin.scss';
 
 .find {
-  .banner {
-    padding: 20px 10px 0 10px;
-    width: 100%;
-    height: 100%;
+  margin-bottom: 20px;
+  
+  .banner-wrapper {
+    padding: 10px 20px;
     box-sizing: border-box;
-    overflow: hidden;
+    background-color: #000;
 
-    @media screen and (min-width: $width-medium) {
-      margin: 20px 0;
+    .banner {
+      @include wrap-center;
     }
   }
-  
-  .title {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: 100;
-  }
 
-  .recommend {
-    position: relative;
+  .find-wrapper {
+    @include wrap-center;
+    
+    .title {
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: 100;
+    }
 
-    .newmusic-wrapper {
-      .playlist {
-        font-size: 1em;
+    .recommend {
+      position: relative;
 
-        .all-play {
-          display: inline-block;
-          margin-bottom: 5px;
-          padding: 0 10px;
-          cursor: pointer;
-          
-          @media screen and (min-width: $width-medium) {
-            &:hover {
-              color: $text-hover-color;
+      .newmusic-wrapper {
+        .playlist {
+          font-size: 1em;
+
+          .all-play {
+            display: inline-block;
+            margin-bottom: 5px;
+            padding: 0 10px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            
+            @media screen and (min-width: $width-medium) {
+              &:hover {
+                color: $text-hover-color;
+              }
             }
           }
         }
       }
     }
   }
+  
 }
 </style>
 

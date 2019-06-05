@@ -1,16 +1,20 @@
 <template>
-  <div class="header clearfix">
-    <div class="search">
-      <SearchBar></SearchBar>
+  <header class="header clearfix">
+    <div class="header-wrap">
+      <h1>Music</h1>
+      <div class="search">
+        <SearchBar></SearchBar>
+      </div>
+      <div class="user">
+        <i class="icon-geren"></i>
+      </div>
     </div>
-    <div class="user">
-      <i class="icon-geren"></i>
-    </div>
-  </div>
+  </header>
 </template>
 
 <script>
 import SearchBar from 'components/SearchBar'
+
 export default {
   components: {
     SearchBar
@@ -20,38 +24,44 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .header {
-  height: 50px;
+  height: 60px;
   border-bottom: 1px solid #000;
-  
-  @media screen and (min-width: $width-medium) {
-    height: 60px;
-  }
+  background-color: #000;
+  color: #fff;
 
-  .search {
-    float: left;
-    width: 80%;
-    height: 100%;
-  
-    @media screen and (min-width: $width-medium) {
-      width: 70%;
-      margin-left: 10%;
-      display: flex;
-      align-items: center;
-    }
-  }
+  .header-wrap {
+    @include wrap-center;
+    padding: 0 20px;
+    box-sizing: border-box;
 
-  .user {
-    float: left;
-    width: 20%;
-    line-height: 50px;
-    text-align: center;
-    font-size: 2.5em;
-
-    @media screen and (min-width: $width-medium) {
-      float: right;
+    h1 {
+      margin: 0;
+      display: inline-block;
+      font-size: 2em;
+      font-weight: 200;
       line-height: 60px;
+      color: $text-hover-color;
+    }
+
+    .search {
+      display: inline-block;
+      margin-left: 30px;
+      line-height: 60px;
+      vertical-align: top;  // 解决 inline-block 不对齐
+    }
+
+    .user {
+      float: right;
+      font-size: 2em;
+      line-height: 60px;
+      cursor: pointer;
+
+      &:hover {
+        color: $text-hover-color;
+      }
     }
   }
 }

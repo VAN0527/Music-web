@@ -145,9 +145,10 @@ export default {
   border-radius: 5px;
   padding: 5px 5px;
   box-shadow: 0 0 16px rgb(94, 94, 94);
+  line-height: initial;
 
   .suggest-item {
-    padding: 5px 0;
+    padding: 2px 0;
     border-bottom: 1px solid #000;
 
     &:last-of-type {
@@ -156,6 +157,7 @@ export default {
 
     .cat {
       .cat-title {
+        text-align: center;
         font-size: 1.2em;
         font-weight: bold;
       }
