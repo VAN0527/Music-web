@@ -76,6 +76,8 @@ export default {
     margin: 5px 0;
     padding: 0 10px;
     display: inline-block;
+    font-size: 1.2em;
+    font-weight: 700;
     cursor: pointer;
     
     &:hover {

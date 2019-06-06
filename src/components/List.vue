@@ -43,7 +43,7 @@ export default {
   .list-item {
     float: left;
     margin: 0.5%;
-    width: 24%;
+    width: 19%;
     box-sizing: border-box;
     text-align: center;
     cursor: pointer;

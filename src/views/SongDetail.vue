@@ -7,7 +7,10 @@
           <h2 class="title">{{song.name}}</h2>
           <p class="singer">
             歌手: 
-            <span v-for="artist in song.artists">
+            <span
+              v-for="(artist, index) in song.artists"
+              :key="index"
+            >
               {{artist.name}}
             </span>
           </p>
@@ -110,50 +113,48 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .songdetail {
-  margin-top: 1em;
-
   .songdetail-wrapper {
-    .info {
-      text-align: center;
+    .song {
+      color: #fff;
+      background-color: #000;
+      padding: 10px 0;
 
-      .cover {
-        width: 80%;
-        border-radius: 50%;
+      .info {
+        @include wrap-center;
+        text-align: center;
 
-        @media screen and (min-width: $width-medium) {
+        .cover {
           float: left;
-          margin-left: 10%;
-          width: 30%;
+          margin-left: 50px;
+          width: 300px;
+          border-radius: 50%;
         }
-      }
 
-      .title {
-        font-size: 2em;
-        font-weight: 400;
-        margin: 5px;
-
-        @media screen and (min-width: $width-medium) {
-          padding-top: 5%;
+        .title {
+          font-size: 1.8em;
+          font-weight: 400;
+          margin: 0 0 0 5px;
         }
       }
     }
 
     .comment {
+      @include wrap-center;
+      padding: 0 10px;
+      box-sizing: border-box;
       h3 {
         text-align: center;
         font-weight: 400;
         margin: 5px;
-
-        @media screen and (min-width: $width-medium) {
-          font-size: 1.75em;
-          margin-top: 15px;
-        }
+        font-size: 1.75em;
+        margin-top: 15px;
       }
 
       .comment-item {
-        padding: 10px;
+        padding: 5px;
         box-sizing: border-box;
         border-bottom: 1px solid rgb(182, 182, 182);
         
@@ -163,16 +164,8 @@ export default {
 
         .comment-left {
           float: left;
-          width: 20%;
-          
-          @media screen and (min-width: $width-medium) {
-            width: 10%;
-          }
-          
-          @media screen and (min-width: $width-large) {
-            width: 80px;
-          }
-
+          width: 80px;
+        
           img {
             max-width: 80%;
           }
@@ -180,15 +173,7 @@ export default {
 
         .comment-right {
           float: left;
-          width: 80%;
-
-          @media screen and (min-width: $width-medium) {
-            width: 90%;
-          }
-          
-          @media screen and (min-width: $width-large) {
-            width: calc(100% - 80px);
-          }
+          width: calc(100% - 80px);
 
           .name,
           .content {
@@ -206,7 +191,6 @@ export default {
           }
         }
       }
-      
     }
   } 
 }

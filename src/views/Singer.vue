@@ -1,39 +1,43 @@
 <template>
   <div class="singer">
     <div class="singer-wrapper" v-show="!loading">
-      <div class="singer-info clearfix">
-        <div class="cover">
-          <img 
-            v-lazy="desc.picUrl" 
-            :key="desc.picUrl"
+      <div class="info-wrapper">
+        <div class="singer-info clearfix">
+          <div class="cover">
+            <img 
+              v-lazy="desc.picUrl" 
+              :key="desc.picUrl"
+            >
+          </div>
+          <div class="info">
+            <div class="name">
+              {{desc.name}}
+            </div>
+            <div class="desc">
+              简介: {{desc.briefDesc}}
+            </div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <span
+            class="tab-item"
+            :class="songsActive" 
+            @click="toggleTab('songs')"
           >
-        </div>
-        <div class="info">
-          <div class="name">
-            {{desc.name}}
-          </div>
-          <div class="desc">
-            简介: {{desc.briefDesc}}
-          </div>
+            歌曲
+          </span>
+          <span 
+            class="tab-item" 
+            :class="albumsActive"
+            @click="toggleTab('albums')"
+          >
+            专辑
+          </span>
         </div>
       </div>
-      <div class="tab-bar">
-        <span
-          class="tab-item"
-          :class="songsActive" 
-          @click="toggleTab('songs')"
-        >
-          歌曲
-        </span>
-        <span 
-          class="tab-item" 
-          :class="albumsActive"
-          @click="toggleTab('albums')"
-        >
-          专辑
-        </span>
+      <div class="singer-view">
+        <router-view></router-view>
       </div>
-      <router-view></router-view>
     </div>
     <Loading :loading="this.loading"></Loading>
   </div>
@@ -94,63 +98,77 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .singer {
-  .singer-info {
-    padding: 20px 0;
+  .singer-wrapper {
+    .info-wrapper {
+      background-color: #000;
+      .singer-info {
+        @include wrap-center;
+        padding: 20px 0;
+        color: #fff;
 
-    .cover {
-      text-align: center;
+        .cover {
+          text-align: center;
 
-      @media screen and (min-width: $width-large) {
-        float: left;
-        width: 300px;
+          @media screen and (min-width: $width-large) {
+            float: left;
+            width: 300px;
+          }
+
+          img {
+            height: 250px;
+            width: 250px;
+            border-radius: 10px;
+          }
+        }
+
+        .info {
+          .name {
+            margin: 10px 0;
+            font-size: 1.5em;
+            text-align: center;
+          }
+
+          .desc {
+            padding: 0 30px;
+            word-break: break-all;
+            text-align: center;
+            
+            @media screen and (min-width: $width-large) {
+              margin: 0 auto 0 300px;
+            }
+          }
+        }
       }
 
-      img {
-        height: 250px;
-        width: 250px;
-        border-radius: 10px;
-      }
-    }
-
-    .info {
-      .name {
-        margin: 10px 0;
-        font-size: 1.5em;
+      .tab-bar {
+        @include wrap-center;
+        padding: 10px 0;
         text-align: center;
-      }
+        font-size: 1.25em;
+        color: #fff;
 
-      .desc {
-        padding: 0 30px;
-        word-break: break-all;
+        .tab-item {    
+          padding: 0 10px;
+          display: inline-block;
+          cursor: pointer;
 
-        @media screen and (min-width: $width-large) {
-          margin: 0 auto 0 300px;
+          &:hover {
+            color: $text-hover-color;
+          }
+
+          &.active {
+            color: $text-hover-color;
+          }
         }
       }
     }
-  }
 
-  .tab-bar {
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    font-size: 1.25em;
-    background-color: #fff;
-    color: #000;
-
-    .tab-item {    
-      padding: 0 10px;
-      display: inline-block;
-      cursor: pointer;
-
-      &:hover {
-        color: $text-hover-color;
-      }
-
-      &.active {
-        color: $text-hover-color;
-      }
+    .singer-view {
+      @include wrap-center;
+      margin-top: 10px;
     }
   }
 }

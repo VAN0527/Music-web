@@ -83,7 +83,7 @@ export default {
     $_getRecommend () {
       getRecommend().then(res =>{
         if (res.status === 200) {
-          this.recommend = res.data.result.slice(0, 12)
+          this.recommend = res.data.result.slice(0, 15)
           this.loading = false
         }
       })

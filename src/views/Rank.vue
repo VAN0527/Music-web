@@ -68,6 +68,7 @@ export default {
 
 .rank {
   .ranklist-wrapper {
+    @include wrap-center;
     margin-top: 20px;
 
     .ranklist-item {
