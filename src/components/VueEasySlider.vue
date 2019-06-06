@@ -4,7 +4,7 @@
       v-for="item in data"
       :key="item.id"
     >
-      <img :src="item.imageUrl">
+      <img :src="item.imageUrl" >
     </SliderItem>
   </Slider>
 </template>
@@ -29,5 +29,6 @@ export default {
 <style lang="scss" scoped>
   img {
     width: 100%;
+    height: 300px;
   }
 </style>

@@ -136,11 +136,11 @@ export default {
   margin-bottom: 20px;
   
   .banner-wrapper {
-    padding: 10px 20px;
-    box-sizing: border-box;
     background-color: #000;
 
     .banner {
+      box-sizing: border-box;
+      padding: 10px 20px;
       @include wrap-center;
     }
   }

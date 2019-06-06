@@ -5,14 +5,20 @@
         class="playlist-item" 
         v-for="song in list"
         :key="song.id"
-        @click.stop="selectItem(song)"
-      >
+      > 
+        <span class="play-icon">
+          <i
+            class="icon-bofang"
+            @click.stop="selectItem(song)"
+          ></i>
+        </span>
         <div class="info">
           <span class="name">{{song.name}}</span>
           <div class="artists">
             <span
               class="artists-item"
-              v-for="artist in song.artists"
+              v-for="(artist, index) in song.artists"
+              :key="index"
               @click.stop="selectArtist(artist)"
             >
               {{artist.name}}
@@ -55,7 +61,7 @@ export default {
 
 .playlist {
   .playlist-item {
-    padding: 5px 10px;
+    padding: 5px 20px;
     height: 40px;
     border-bottom: 1px solid #fff;
     cursor: pointer;
@@ -64,8 +70,19 @@ export default {
       border-bottom: none;
     }
 
+    .play-icon {
+      float: left;
+      font-size: 2em;
+      cursor: pointer;
+
+      &:hover {
+        color: $text-hover-color;
+      }
+    }
+
     .info {
       float: left;
+      margin-left: 5px;
       width: 70%;
 
       .name,

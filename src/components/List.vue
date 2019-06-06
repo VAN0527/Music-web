@@ -42,19 +42,11 @@ export default {
 
   .list-item {
     float: left;
-    width: 49%;
     margin: 0.5%;
+    width: 24%;
     box-sizing: border-box;
     text-align: center;
     cursor: pointer;
-
-    @media screen and (min-width: $width-medium) {
-      width: 32.3333%;
-    } 
-
-    @media screen and (min-width: $width-large) {
-      width: 24%;
-    } 
 
     .cover {
       img {
@@ -69,10 +61,8 @@ export default {
       width: 100%;
       @include no-wrap();
 
-      @media screen and (min-width: $width-large) {
-        &:hover {
-          color: $text-hover-color;
-        }
+      &:hover {
+        color: $text-hover-color;
       }
     }
   }
