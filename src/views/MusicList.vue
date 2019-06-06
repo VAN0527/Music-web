@@ -10,23 +10,22 @@
         </div>
         <div class="info">
           <h2 class="title">{{data.title}}</h2>
-          <p class="creater">{{data.creator}}</p>
           <div class="btns">
             <div 
               class="btn"
               @click.stop="playAll(data.songs)"
             >
-              <i class="icon-bofang"></i>
-              <span>全部播放</span>
+              <span>PLAY</span>
             </div>
             <div class="btn">
-              <i class="icon-shoucang"></i>
               <span>收藏</span>
             </div>
           </div>
+          <p class="creater">创建者: {{data.creator}}</p>
+          <p class="desc">简介: {{data.description}}</p>
         </div>
       </div>
-      <div class="playlist">
+      <div class="playlist-wrapper">
         <PlayList
           :list="data.songs" 
           @select="selectItem"
@@ -82,6 +81,7 @@ export default {
       getMusicList(this.id).then(res => {
         if (res.status === 200) {
           const musiclist = res.data.playlist
+          console.log(musiclist)
           this.data = this.$_formatMusicList(musiclist)
           this.loading = false
         }
@@ -101,6 +101,7 @@ export default {
         songs: this.$_formatSong(musiclist.tracks),
         title: musiclist.name,
         creator: musiclist.creator.nickname,
+        description: musiclist.description,
         picUrl: `${musiclist.coverImgUrl}?param=400y400`,
       }
     },
@@ -142,51 +143,65 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .musiclist {
-  .list-info {
-    position: relative;
-    padding: 20px;
+  .musiclist-wrapper {
+    padding-top: 20px;
+    @include wrap-center;
 
-    .cover {
-      text-align: center;
+    .list-info {
+      float: left;
+      width: 300px;
+      .cover {
+        text-align: center;
 
-      @media screen and (min-width: $width-large) {
-        float: left;
-        width: 300px;
+        img {
+          height: 250px;
+          width: 250px;
+          border-radius: 10px;
+        }
       }
 
-      img {
-        height: 250px;
-        width: 250px;
-        border-radius: 10px;
+      .info {
+        text-align: center;
+        
+        .title {
+          font-size: 1.3em;
+          font-weight: 400;
+        }
+
+        .btns {
+          .btn {
+            margin: 0 5px;
+            padding: 5px 20px;
+            display: inline-block;
+            border-radius: 9999999999px;
+            border: none;
+            background-color: $text-hover-color;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+            
+            &:hover {
+              color: #000;
+            }
+
+            i {
+              font-size: 1.2em;
+            }
+          }
+        }
+
+        .desc {
+          text-align: left;
+          overflow: hidden;
+        }
       }
     }
 
-    .info {
-      position: relative;
-      text-align: center;
-      overflow: hidden;
-      
-      .title {
-        font-size: 1.3em;
-        font-weight: 400;
-        overflow: hidden;
-      }
-
-      .btns {
-        .btn {
-          margin: 0 5px;
-          padding: 10px 10px;
-          display: inline-block;
-          border-radius: 10px;
-          border: none;
-          background-color: $text-hover-color;
-          color: #fff;
-          cursor: pointer;
-          outline: none;
-        }
-      }
+    .playlist-wrapper {
+      margin-left: 320px;
     }
   }
 }
