@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     id () {
-      return this.$route.params.id
+      return this.$route.query.id
     }
   },
   created () {
@@ -81,7 +81,6 @@ export default {
       getMusicList(this.id).then(res => {
         if (res.status === 200) {
           const musiclist = res.data.playlist
-          console.log(musiclist)
           this.data = this.$_formatMusicList(musiclist)
           this.loading = false
         }

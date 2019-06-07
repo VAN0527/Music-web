@@ -63,8 +63,7 @@ export default {
   .playlist-item {
     padding: 5px 20px;
     height: 40px;
-    border-bottom: 1px solid #fff;
-    cursor: pointer;
+    border-bottom: 1px solid rgba(185, 185, 185, 0.5);
     
     &:last-child {
       border-bottom: none;
@@ -97,13 +96,12 @@ export default {
       .artists {
         font-size: 0.7em;
         color: rgb(184, 184, 184);
+        cursor: pointer;
 
         .artists-item {
-          @media screen and (min-width: $width-large) {
-            &:hover {
-                color: $text-hover-color;
-              }
-          }
+          &:hover {
+              color: $text-hover-color;
+            }
         }
       }
     }

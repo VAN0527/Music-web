@@ -66,7 +66,10 @@ export default {
   methods: {
     selectRecommend (item) {
       this.$router.push({
-        path: `/musiclist/${item.id}`
+        path: '/musiclist',
+        query: {
+          id: item.id
+        }
       })
     },
     selectItem (item) {

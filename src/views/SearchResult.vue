@@ -71,11 +71,16 @@ export default {
 
 <style lang="scss" scoped>
 @import 'styles/variable.scss';
+@import 'styles/mixin.scss';
 
 .search {
+  @include wrap-center;
+
   .title {
     text-align: center;
+
      h2 {
+        margin: 10px;
         font-size: 32px;
         font-weight: 100;
      }

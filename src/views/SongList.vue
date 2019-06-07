@@ -40,7 +40,10 @@ export default {
     },
     selectSongList (songlist) {
       this.$router.push({
-        path: `/musiclist/${songlist.id}`
+        path: '/musiclist',
+        query: {
+          id: songlist.id
+        }
       })
     },
     $_getSonglist (cat = '全部') {

@@ -34,11 +34,11 @@ export default new Router({
       component: SongList
     },
     {
-      path: '/musiclist/:id',
+      path: '/musiclist',
       component: MusicList
     },
     {
-      path: '/album/:id',
+      path: '/album',
       component: MusicList,
       props: {
         albums: true

@@ -25,18 +25,19 @@
             class="icon-bofang play"
             @click="play(song.id)"
           ></i>
-          <span>{{song.name}}</span>
+          <span @click="selectSong(song.id)">{{song.name}}</span>
         </div>
         <div class="artists">
           <span 
             v-for="artist in song.artists"
             :key="artist.id"
+            @click="selectArtist(artist.id)"
           >
             {{artist.name}}
           </span>
         </div>
         <div class="albums">
-          <span>{{song.album.name}}</span>
+          <span @click="selectAlbum(song.album.id)">{{song.album.name}}</span>
         </div>
         <div class="duration">
           <span>{{song.duration}}</span>
@@ -76,6 +77,30 @@ export default {
     play (id) {
       this.$_getSong(id).then(song => {
         this.insertSong(song)
+      })
+    },
+    selectSong (id) {
+      this.$router.push({
+        path: '/songdetail',
+        query: {
+          id
+        }
+      })
+    },
+    selectArtist(id) {
+      this.$router.push({
+        path: '/singer',
+        query: {
+          id
+        }
+      })
+    },
+    selectAlbum (id) {
+      this.$router.push({
+        path: '/album',
+        query: {
+          id
+        }
       })
     },
     $_getSearchResult () {
@@ -134,18 +159,24 @@ export default {
 
 .songs {
   font-size: 1em;
-  
+
   .songlist {
     .songlist-item {
-      height: 1.6em;
+      height: 30px;
       padding: 5px;
-      border-bottom: 1px solid #fff;
-      line-height: 1.6em;
-
+      border-bottom: 1px solid rgba(185, 185, 185, 0.5);
+      line-height: 30px;
+      
       &:first-child {
-        padding-left: 1em;
+        span {
+          cursor: auto !important;
+          &:hover {
+            color: #000 !important;
+          }
+        }
       }
 
+      &:first-child,
       &:last-child {
         border-bottom: none;
       }
@@ -169,6 +200,14 @@ export default {
             color: $text-hover-color;
           }
         }
+
+        span {
+          cursor: pointer;
+
+          &:hover {
+            color: $text-hover-color;
+          }
+        }
       }
 
       .albums,
@@ -176,6 +215,18 @@ export default {
       .duration {
         width: 18.3333%;
         text-align: center;
+      }
+
+      .albums,
+      .artists,
+      .name{
+        span {
+          cursor: pointer;
+          
+          &:hover {
+            color: $text-hover-color;
+          }
+        }
       }
     }
   }

@@ -32,7 +32,10 @@ export default {
   methods: {
     selectAlbum (album) {
       this.$router.push({
-        path: `/album/${album.id}`
+        path: '/album',
+        query: {
+          id: album.id
+        }
       })
     },
     $_getSingerAlbums () {

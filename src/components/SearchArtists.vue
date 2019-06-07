@@ -34,7 +34,10 @@ export default {
   methods: {
     selectArtist (id) {
       this.$router.push({
-        path: `/singer/${id}`
+        path: '/singer',
+        query: {
+          id
+        }
       })
     },
     $_getSearchResult () {
@@ -71,17 +74,9 @@ export default {
     float: left;
     margin-top: 1em;
     padding: 10px;
-    width: 50%;
+    width: 20%;
     box-sizing: border-box;
     text-align: center;
-
-    @media screen and (min-width: $width-medium) {
-      width: 33.3333%
-    }
-
-    @media screen and (min-width: $width-large) {
-      width: 25%;
-    }
 
     .pic {
       width: 100%;
@@ -93,6 +88,11 @@ export default {
       padding-top: 5px;
       width: 100%;
       @include no-wrap;
+      cursor: pointer;
+
+      &:hover {
+        color: $text-hover-color;
+      }
     }
   }
 }
