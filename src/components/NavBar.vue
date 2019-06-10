@@ -16,7 +16,7 @@
 <script>
 const routes = [
   { path: '/', name: '首页' },
-  { path: '/songlist', name: '歌单' },
+  { path: '/songlist?cat=全部', name: '歌单' },
   { path: '/rank', name: '排行榜'}
 ]
 export default {

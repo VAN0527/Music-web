@@ -31,12 +31,27 @@ export default {
       loading: true
     }
   },
-  created () {
-    this.$_getSonglist()
+  computed: {
+    cat () {
+      return this.$route.query.cat
+    }
+  },
+  watch: {
+    '$route' () {
+      this.$_getSonglist(this.cat)
+    }
+  },
+  mounted () {
+    this.$_getSonglist(this.cat)
   },
   methods: {
     selectItem (cat) {
-      this.$_getSonglist(cat)
+      this.$router.push({
+        path: '/songlist',
+        query: {
+          cat
+        }
+      })
     },
     selectSongList (songlist) {
       this.$router.push({
@@ -46,11 +61,8 @@ export default {
         }
       })
     },
-    $_getSonglist (cat = '全部') {
-      this.loading = true
-      this.songlist = []
-
-      getSonglist(cat).then(res => {
+    $_getSonglist () {
+      getSonglist(this.cat).then(res => {
         this.songlist = this.$_formatList(res.data.playlists)
         this.loading = false
       })

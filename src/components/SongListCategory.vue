@@ -2,7 +2,8 @@
   <div class="category">
     <div class="currentCat">
       <span @click="toggleCatlist">
-        {{currentCat}} <i :class="[show ? 'icon-shrinkage' : 'icon-arrow-down']"></i>
+        {{currentCat}}
+        <i :class="[show ? 'icon-shrinkage' : 'icon-arrow-down']"></i>
       </span>
     </div>
     <div class="catlist" v-show="show">
@@ -69,11 +70,11 @@ export default {
     $_getCatlist () {
       getCatlist().then(res => {
         if (res.status === 200) {
-          this.catlist = this.$_normalizeCatlist(res.data)
+          this.catlist = this.$_formatCatlist(res.data)
         }
       })
     },
-    $_normalizeCatlist (catlist) {
+    $_formatCatlist (catlist) {
       const categories = catlist.categories
       const subs = catlist.sub
       let result = []
