@@ -1,3 +1,24 @@
+// 页面滚动条出现时不跳动
+@mixin scrollbar-debounce {
+  html {
+    overflow-y: scroll;
+  }
+  
+  :root {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  :root body {
+    position: absolute;
+  }
+  
+  body {
+    width: 100vw;
+    overflow: hidden;
+  }
+}
+
 @mixin no-wrap {
   white-space: nowrap;
   overflow: hidden;

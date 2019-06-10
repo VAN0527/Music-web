@@ -1,3 +1,7 @@
+@import './mixin.scss';
+
+@include scrollbar-debounce;
+
 .clearfix::after {
   content: '';
   clear: both;

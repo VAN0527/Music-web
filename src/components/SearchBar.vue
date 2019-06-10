@@ -105,7 +105,7 @@ export default {
     position: absolute;
     top: 50px;
     width: 100%;
-    z-index: 10;
+    z-index: 100;
   }
 }
 </style>
