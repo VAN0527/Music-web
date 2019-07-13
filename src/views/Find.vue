@@ -94,8 +94,9 @@ export default {
     $_getNewMusic () {
       getNewMusic().then(res => {
         if (res.status === 200) {
-          const songs = [...res.data.result]
-          this.newMusic = this.$_formatSong(songs)
+          const songs = this.$_formatSong(res.data.data.slice(0, 10))
+
+          this.newMusic = songs
         }
       })
     },
@@ -104,9 +105,9 @@ export default {
         return {
           id: song.id,
           name: song.name,
-          duration: formatDuration(song.song.duration),
-          artists: formatArtists(song.song.artists),
-          picUrl: `${song.song.album.picUrl}?param=400y400`,
+          duration: formatDuration(song.duration),
+          artists: formatArtists(song.artists),
+          picUrl: `${song.album.picUrl}?param=400y400`,
           url:`https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
         }
       })

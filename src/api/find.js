@@ -14,7 +14,7 @@ export function getRecommend () {
 }
 
 export function getNewMusic () {
-  const url = HOST + '/personalized/newsong'
+  const url = HOST + '/top/song'
 
   return axios.get(url)
 }
