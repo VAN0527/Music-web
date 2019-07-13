@@ -39,10 +39,7 @@ export default {
     present (newPresent) {
       // 进度条拖动时，不自动更新
       if (!this.drag) {
-        const progressBarWidth = this.$refs.progressBar.clientWidth
-        const offset = newPresent * progressBarWidth
-        this.$refs.progress.style.width = offset + 'px'
-        this.$refs.dot.style.left = offset + 'px'
+        this.$_setProgressOffset(newPresent)
       } 
     }
   },
@@ -58,22 +55,20 @@ export default {
       this.drag = true
     },
     mousemove (e) {
-      if (this.drag) {
+      if (this.drag) {  
         this.x = e.pageX
-        const elX = this.$refs.progressBar.getBoundingClientRect().left
+        const elX = parseInt(this.$refs.progressBar.getBoundingClientRect().left)
         const elWidth = this.$refs.progressBar.clientWidth
 
-        // Math.min 防止溢出
-        const offset = Math.min(this.x - elX, elWidth)
-        this.$refs.progress.style.width = offset + 'px'
-        this.$refs.dot.style.left = offset + 'px'
+        const offset = Math.min(this.x - elX, elWidth - DOT_WIDTH) // Math.min 防止溢出
+        this.$_setOffset(offset)
       }
     },
     mouseup (e) {
       if (this.drag) {
         this.drag = false
         const progressWidth = this.$refs.progress.clientWidth
-        const present = this.$_present(progressWidth)
+        const present = this.$_getPresent(progressWidth)
         
         this.$emit('progressChange', present)
       }
@@ -81,24 +76,32 @@ export default {
     progressClick (e) {
       const clickX = e.pageX
       const elX = this.$refs.progressBar.getBoundingClientRect().left
+
       const progressBarWidth = this.$refs.progressBar.clientWidth
       const offset = Math.min(Math.max(0, clickX - elX), progressBarWidth - DOT_WIDTH)
-      this.$refs.progress.style.width = offset + 'px'
-      this.$refs.dot.style.left = offset + 'px'
 
-      const present = this.$_present(offset)
+      this.$_setOffset(offset)
+
+      const present = this.$_getPresent(offset)
       this.$emit('progressChange', present)
     },
-    $_present (width) {
+    $_setProgressOffset (present) {
       const progressBarWidth = this.$refs.progressBar.clientWidth
-      const present = width / progressBarWidth
+      const offset= present * (progressBarWidth - DOT_WIDTH)
+
+      this.$_setOffset(offset)
+    },
+    $_setOffset (offset) {
+      this.$refs.progress.style.width = offset + 'px'
+      this.$refs.dot.style.left = offset + 'px'
+    },
+    $_getPresent (width) {
+      const progressBarWidth = this.$refs.progressBar.clientWidth
+      const present = width / (progressBarWidth - DOT_WIDTH)
       return present
     },
     $_initProgress () {
-      const progressBarWidth = this.$refs.progressBar.clientWidth
-      const offset = this.present * progressBarWidth
-      this.$refs.progress.style.width = offset + 'px'
-      this.$refs.dot.style.left = offset + 'px'
+      this.$_setProgressOffset(this.present)
     }
   }
 }
@@ -137,6 +140,7 @@ export default {
       border-radius: 50%;
       background-color: beige;
       z-index: 10;
+      
       &:hover {
         cursor: pointer;
       }

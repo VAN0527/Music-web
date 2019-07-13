@@ -1,76 +1,78 @@
 <template>
-  <div class="player clearfix" v-show="playlist.length > 0">
-    <div class="music-info">
-      <div class="cover-img">
-        <img 
-          v-lazy="currentSong.picUrl" 
-          :key="currentSong.picUrl"
-          @click="selectSong"
-        >
-      </div>
-      <div class="music-text" v-if="currentSong">
-        <span @click="selectSong">{{currentSong.name}}</span>
-        <div class="artists">
-          <span
-            class="artists-item"
-            v-for="artist in currentSong.artists"
-            :key="artist.id"
-            @click="selectArtist(artist)"
+  <div class="player clearfix" v-if="playlist.length > 0">
+    <div class="player-wrapper">
+      <div class="music-info">
+        <div class="cover-img">
+          <img 
+            v-lazy="currentSong.picUrl" 
+            :key="currentSong.picUrl"
+            @click="selectSong"
           >
-            {{artist.name}}
-          </span>
+        </div>
+        <div class="music-text" v-if="currentSong">
+          <span @click="selectSong">{{currentSong.name}}</span>
+          <div class="artists">
+            <span
+              class="artists-item"
+              v-for="artist in currentSong.artists"
+              :key="artist.id"
+              @click="selectArtist(artist)"
+            >
+              {{artist.name}}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="control">
-      <div class="btn">
-        <i 
-          class="icon-shangyishou"
-          @click="prev"
-        ></i>
-      </div>
-      <div class="btn">
-        <i
-          :class="iconPlay"
-          @click="togglePlay"
-        ></i>
-      </div>
-      <div class="btn">
-        <i 
-          class="icon-xiayishou"
-          @click="next"
-        ></i>
-      </div>
-    </div>
-    <div class="play-message">
-      <div class="volume-control">
-        <div class="icon">
+      <div class="control">
+        <div class="btn">
+          <i 
+            class="icon-shangyishou"
+            @click="prev"
+          ></i>
+        </div>
+        <div class="btn">
           <i
-            :class="iconVolume" 
-            @click="toggleMute"
-          ></i>
-        </div>
-        <Progress
-          class="volume-progress"
-          :present="volume"
-          @progressChange="volumeChange"
-        ></Progress>
-      </div>
-      <div class="duration" v-if="currentSong">
-        <span>{{currentTime}} / {{currentSong.duration}}</span>
-      </div>
-      <div class="more">
-        <div class="btn">
-          <i 
-            :class="iconMode" 
-            @click="changeMode"
+            :class="iconPlay"
+            @click="togglePlay"
           ></i>
         </div>
         <div class="btn">
           <i 
-            class="icon-bofangliebiao" 
-            @click="toPlaylist"
+            class="icon-xiayishou"
+            @click="next"
           ></i>
+        </div>
+      </div>
+      <div class="play-message">
+        <div class="volume-control">
+          <div class="icon">
+            <i
+              :class="iconVolume" 
+              @click="toggleMute"
+            ></i>
+          </div>
+          <Progress
+            class="volume-progress"
+            :present="volume"
+            @progressChange="volumeChange"
+          ></Progress>
+        </div>
+        <div class="duration" v-if="currentSong">
+          <span>{{currentTime}} / {{currentSong.duration}}</span>
+        </div>
+        <div class="more">
+          <div class="btn">
+            <i 
+              :class="iconMode" 
+              @click="changeMode"
+            ></i>
+          </div>
+          <div class="btn">
+            <i 
+              class="icon-bofangliebiao" 
+              @click="toPlaylist"
+            ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -93,7 +95,7 @@
 <script>
 import Progress from 'components/Progress'
 import { mapGetters, mapMutations } from 'vuex'
-import { setTimeout, clearTimeout } from 'timers';
+import { setTimeout, clearTimeout } from 'timers'
 import { playMode } from 'utils/config.js'
 import { shuffle } from 'utils/common.js'
 
@@ -301,146 +303,97 @@ export default {
 .player {
   position: fixed;
   bottom: 0;
-  height: 60px;
+  height: 80px;
   width: 100%;
   background-color: rgb(17, 17, 17);
   color: #fff;
-  
-  @media screen and (min-width: $width-large) {
-    height: 80px;
-  }
 
-  .music-info {
-    float: left;
-    box-sizing: border-box;
-    padding: 0 5px;
-    width: 30%;
-    @include no-wrap;
+  .player-wrapper {
+    @include wrap-center;
 
-    .cover-img {
-      display: none;
-      
-      @media screen and (min-width: $width-medium) {
-        float: left;
-        display: block;
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
-      }
-
-      @media screen and (min-width: $width-large) {
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
-      }
-
-      img {
-        width: 80%;
-        height: 80%;
-        border-radius: 10px;
-        vertical-align: middle;
-      }
-    }
-
-    .music-text {
-      width: 100%;
-      height: 60px;
-      line-height: 30px;
+    .music-info {
+      float: left;
+      box-sizing: border-box;
+      padding: 0 5px;
+      width: 30%;
       @include no-wrap;
 
-      @media screen and (min-width: $width-medium) {
+      .cover-img {
         float: left;
-        width: 65%;
+        width: 30%;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+
+        img {
+          width: 70px;
+          height: 70px;
+          border-radius: 10px;
+          vertical-align: middle;
+        }
       }
 
-      @media screen and (min-width: $width-large) {
+      .music-text {
+        float: left;
+        width: 70%;
         height: 80px;
         line-height: 40px;
-      }
-
-      .artists {
-        width: 100%;
-        font-size: .3em;
         @include no-wrap;
 
-        @media screen and (min-width: $width-large) {
+        .artists {
+          width: 100%;
           font-size: 1em;
-        }
+          @include no-wrap;
 
-        .artists-item {
-          cursor: pointer;
+          .artists-item {
+            cursor: pointer;
 
-          &:hover {
-            color: $text-hover-color;
+            &:hover {
+              color: $text-hover-color;
+            }
           }
         }
       }
     }
-  }
 
-  .control {
-    float: left;
-    width: 40%;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    text-align: center;
-
-    @media screen and (min-width: $width-large) {
+    .control {
+      float: left;
+      width: 40%;
       height: 80px;
-    }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    .btn {
-      font-size: 1.8em;
-      
-      @media screen and (min-width: $width-large) {
+      .btn {
         margin-top: -5px;
         font-size: 2.5em;
       }
     }
-  }
 
-  .play-message {
-    float: left;
-    padding-right: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 30%;
-    height: 60px;
-    box-sizing: border-box;
-    
-    @media screen and (min-width: $width-large) {
+    .play-message {
+      float: left;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 30%;
       height: 80px;
-    }
 
-    .duration {
-      display: none;
-
-      @media screen and (min-width: $width-large) {
+      .duration {
         display: flex;
         align-items: center;
       }
-    }
 
-    .volume-control {
-      margin: 0 2px;
-      text-align: center;
-      font-size: 1.5em;
-
-      @media screen and (min-width: $width-large) {
+      .volume-control {
+        margin: 0 2px;
         display: flex;
         align-items: center;
         margin-right: 10px;
         width: 40%;
         height: 100%;
         font-size: 26px;
-      }
+        text-align: center;
 
-      .icon {
-        @media screen and (min-width: $width-large) {
+        .icon {
           display: inline-block;
           width: 30px;
           height: 30px;
@@ -450,32 +403,26 @@ export default {
             color: $text-hover-color;
           }
         }
-      }
 
-      .volume-progress {
-        display: none;
-
-        @media screen and (min-width: $width-large) {
-          margin-left: 8px;
+        .volume-progress {
+          margin-left: 10px;
+          width: 100px;
           display: flex;
         }
       }
     }
-  }
-  
-  .btn {
-    margin: 0 3px;
-    padding: 0;
-    display: inline-block;
-    border: none;
-    background-color: transparent;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1.5em;
-    outline: none;
-
-    @media screen and (min-width: $width-large) {
+    
+    .btn {
+      margin: 0 3px;
+      padding: 0;
+      display: inline-block;
+      border: none;
       font-size: 2em;
+      background-color: transparent;
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+
       &:hover {
         color: $text-hover-color;
       }
