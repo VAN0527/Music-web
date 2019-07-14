@@ -63,6 +63,7 @@ export default {
             type: 1
           }
         })
+        this.keyword = ''
         this.suggestsShow = false
       }
     }

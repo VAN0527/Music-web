@@ -74,6 +74,8 @@ export default {
 @import 'styles/mixin.scss';
 
 .playlist-wrapper {
+  @include wrap-center;
+
   h2 {
     text-align: center;
     font-size: 2em;
