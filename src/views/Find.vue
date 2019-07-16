@@ -87,7 +87,6 @@ export default {
       getRecommend().then(res =>{
         if (res.status === 200) {
           this.recommend = res.data.result.slice(0, 15)
-          this.loading = false
         }
       })
     },
@@ -95,8 +94,8 @@ export default {
       getNewMusic().then(res => {
         if (res.status === 200) {
           const songs = this.$_formatSong(res.data.data.slice(0, 10))
-
           this.newMusic = songs
+          this.loading = false
         }
       })
     },

@@ -2,7 +2,6 @@
   <div id="app" class="iconfont"> 
     <div ref="main">
       <Header></Header>
-      <NavBar></NavBar>
       <router-view/>
     </div>
     <Player></Player>
@@ -12,15 +11,13 @@
 <script>
 import Header from 'components/Header.vue'
 import Player from 'components/Player.vue'
-import NavBar from 'components/NavBar'
 
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Header,
-    Player,
-    NavBar
+    Player
   },
   computed: {
     ...mapGetters([

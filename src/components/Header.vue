@@ -8,16 +8,21 @@
       <div class="user">
         <i class="icon-geren"></i>
       </div>
+      <nav class="nav">
+        <NavBar></NavBar>
+      </nav>
     </div>
   </header>
 </template>
 
 <script>
 import SearchBar from 'components/SearchBar'
+import NavBar from 'components/NavBar'
 
 export default {
   components: {
-    SearchBar
+    SearchBar,
+    NavBar
   }
 }
 </script>
@@ -51,6 +56,11 @@ export default {
       margin-left: 30px;
       line-height: 60px;
       vertical-align: top;  // 解决 inline-block 不对齐
+    }
+
+    .nav {
+      float: right;
+      line-height: 60px;
     }
 
     .user {

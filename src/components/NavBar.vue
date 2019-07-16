@@ -33,13 +33,9 @@ export default {
 @import 'styles/mixin.scss';
 
 .nav {
-  padding-bottom: 10px;
   background-color: #000;
 
   .nav-wrapper {
-    @include wrap-center;
-    text-align: center;
-
     .nav-item {
       margin: 0 20px;
 
