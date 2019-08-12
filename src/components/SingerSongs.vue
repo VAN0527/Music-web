@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import PlayList from 'components/PlayList.vue'
+import PlayList from 'components/PlayList'
 import { getSingerSongsAndDesc } from 'api/singer.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'

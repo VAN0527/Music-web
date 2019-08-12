@@ -140,13 +140,13 @@ export default {
 @import 'styles/mixin.scss';
 
 .suggest {
-  background-color: #fff;
-  color: #000;
   border-radius: 5px;
   padding: 5px 5px;
   box-shadow: 0 0 16px rgb(94, 94, 94);
   line-height: initial;
-
+  background-color: #fff;
+  color: $color-black;
+  
   .suggest-item {
     padding: 2px 0;
     border-bottom: 1px solid #000;
@@ -168,7 +168,7 @@ export default {
         @include no-wrap;
         
         &:hover {
-          background: $hover-bg-color;
+          background: $bg-color;
           color: $text-hover-color;
         }
       }

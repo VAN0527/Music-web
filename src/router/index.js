@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Find from 'views/Find.vue'
+import Find from 'views/Find'
 import SongList from 'views/SongList'
 import Rank from 'views/Rank'
 import MusicList from 'views/MusicList'

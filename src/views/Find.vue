@@ -139,11 +139,12 @@ export default {
   margin-bottom: 20px;
   
   .banner-wrapper {
-    background-color: #000;
+    background-color: $bg-color;
 
     .banner {
       box-sizing: border-box;
-      padding: 10px 20px;
+      height: 350px;
+      padding: 20px;
       @include wrap-center;
     }
   }
@@ -172,17 +173,14 @@ export default {
             font-weight: 700;
             cursor: pointer;
             
-            @media screen and (min-width: $width-medium) {
-              &:hover {
-                color: $text-hover-color;
-              }
+            &:hover {
+              color: $text-hover-color;
             }
           }
         }
       }
     }
   }
-  
 }
 </style>
 

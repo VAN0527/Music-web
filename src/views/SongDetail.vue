@@ -118,10 +118,10 @@ export default {
 .songdetail {
   .songdetail-wrapper {
     .song {
-      color: #fff;
-      background-color: #000;
       padding: 10px 0;
-
+      background-color: $bg-color;
+      color: $color-primary;
+      
       .info {
         @include wrap-center;
         text-align: center;

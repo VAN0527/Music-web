@@ -27,7 +27,7 @@
       </div>
       <div class="playlist-wrapper">
         <PlayList
-          :list="data.songs" 
+          :list="data.songs"
           @select="selectItem"
         ></PlayList>
       </div>
@@ -173,21 +173,17 @@ export default {
         .btns {
           .btn {
             margin: 0 5px;
-            padding: 5px 20px;
+            padding: 5px 2em;
             display: inline-block;
             border-radius: 9999999999px;
             border: none;
             background-color: $text-hover-color;
-            color: #fff;
+            color: $color-primary;
             cursor: pointer;
             outline: none;
             
             &:hover {
               color: #000;
-            }
-
-            i {
-              font-size: 1.2em;
             }
           }
         }
@@ -200,7 +196,7 @@ export default {
     }
 
     .playlist-wrapper {
-      margin-left: 320px;
+      margin-left: 300px;
     }
   }
 }

@@ -33,7 +33,7 @@ export default {
 @import 'styles/mixin.scss';
 
 .nav {
-  background-color: #000;
+  background-color: $bg-color;
 
   .nav-wrapper {
     .nav-item {

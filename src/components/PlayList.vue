@@ -95,7 +95,7 @@ export default {
 
       .artists {
         font-size: 0.7em;
-        color: rgb(184, 184, 184);
+        color: rgb(120, 120, 120);
         cursor: pointer;
 
         .artists-item {

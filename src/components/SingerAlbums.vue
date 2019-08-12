@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import List from 'components/List.vue'
+import List from 'components/List'
 import { getSingerAlbums } from 'api/singer.js'
 import { formatAlbums } from 'utils/song.js'
 

@@ -106,7 +106,7 @@ export default {
       }
 
       &.active {
-        background: $hover-bg-color;
+        background: $bg-color;
         color: #000;
       }
 

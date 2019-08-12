@@ -103,11 +103,11 @@ export default {
 .singer {
   .singer-wrapper {
     .info-wrapper {
-      background-color: #000;
+      background-color: $bg-color;
       .singer-info {
         @include wrap-center;
         padding: 20px 0;
-        color: #fff;
+        color: $color-primary;
 
         .cover {
           text-align: center;
@@ -148,7 +148,7 @@ export default {
         padding: 10px 0;
         text-align: center;
         font-size: 1.25em;
-        color: #fff;
+        color: $color-primary;
 
         .tab-item {    
           padding: 0 10px;

@@ -33,9 +33,8 @@ export default {
 
 .header {
   height: 60px;
-  border-bottom: 1px solid #000;
-  background-color: #000;
-  color: #fff;
+  background-color: $bg-color;
+  color: $color-primary;
 
   .header-wrap {
     @include wrap-center;

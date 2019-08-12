@@ -305,8 +305,8 @@ export default {
   bottom: 0;
   height: 80px;
   width: 100%;
-  background-color: rgb(17, 17, 17);
-  color: #fff;
+  background-color: $bg-color;
+  color: $color-primary;
 
   .player-wrapper {
     @include wrap-center;
@@ -419,7 +419,7 @@ export default {
       border: none;
       font-size: 2em;
       background-color: transparent;
-      color: #fff;
+      color: $color-primary;
       cursor: pointer;
       outline: none;
 

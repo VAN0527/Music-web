@@ -118,7 +118,7 @@ export default {
 
   .progress-bar {
     position: relative;
-    height: 2px;
+    height: 4px;
     width: 100%;
     background-color: rgb(211, 215, 218);
 
@@ -126,7 +126,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0px;
-      height: 2px;
+      height: 4px;
       width: 0;
       background-color: $text-hover-color;
     }
@@ -134,7 +134,7 @@ export default {
     .dot {
       position: absolute;
       left: 0;
-      top: -3px;
+      top: -2px;
       width: 8px;
       height: 8px;
       border-radius: 50%;

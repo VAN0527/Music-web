@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Header from 'components/Header.vue'
-import Player from 'components/Player.vue'
+import Header from 'components/Header'
+import Player from 'components/Player'
 
 import { mapGetters } from 'vuex'
 
@@ -40,7 +40,7 @@ export default {
 
 #app {
   min-height: 100vh;
-  color: $text-color;
+  color: $color-black;
   background-color: $theme-color;
   overflow: auto;
 
