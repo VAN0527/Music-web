@@ -10,14 +10,15 @@
             <span
               v-for="(artist, index) in song.artists"
               :key="index"
+              @click="selectSinger(artist.id)"
             >
-              {{artist.name}}
+              {{ artist.name }}
             </span>
           </p>
-          <p class="album">专辑: {{song.album}}</p>
-        </div>
-        <div class="lyric">
-          
+          <p class="album">
+            专辑:
+            <span @click="selectAlbum(song.album.id)">{{ song.album.name }}</span>
+          </p>
         </div>
       </div>
       <div class="comment">
@@ -70,6 +71,22 @@ export default {
     this.$_getComments()
   },
   methods: {
+    selectSinger (id) {
+      this.$router.push({
+        path: '/singer',
+        query: {
+          id
+        }
+      })
+    },
+    selectAlbum (id) {
+      this.$router.push({
+        path: '/album',
+        query: {
+          id
+        }
+      })
+    },
     $_getSong () {
       getSong(this.$route.query.id).then(res => {
         if (res.status === 200) {
@@ -89,7 +106,7 @@ export default {
       return {
         id: song.id,
         name: song.name,
-        album: song.al.name,
+        album: song.al,
         artists: formatArtists(song.ar),
         picUrl: song.al.picUrl + '?param=400y400'
       }
@@ -138,6 +155,16 @@ export default {
           font-weight: 400;
           margin: 0 0 0 5px;
         }
+
+        .singer,
+        .album {
+          span {
+            &:hover {
+              color: $text-hover-color;
+              cursor: pointer;
+            }
+          }
+        }
       }
     }
 
@@ -145,11 +172,12 @@ export default {
       @include wrap-center;
       padding: 0 10px;
       box-sizing: border-box;
+
       h3 {
         text-align: center;
         font-weight: 400;
         margin: 5px;
-        font-size: 1.75em;
+        font-size: 1.8em;
         margin-top: 15px;
       }
 
@@ -168,6 +196,7 @@ export default {
         
           img {
             max-width: 80%;
+            border-radius: 5px;
           }
         }
 
@@ -182,12 +211,13 @@ export default {
 
           .name {
             padding: 3px 0;
-            font-size: 1.1em;
+            font-size: 1em;
             color: $text-hover-color;
           }
 
           .content {
             word-wrap: break-word;
+            font-size: 0.9em;
           }
         }
       }
