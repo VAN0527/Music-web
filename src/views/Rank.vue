@@ -6,21 +6,13 @@
         v-for="item in rankList"
         :key="item.id"
       >
-        <div
-          class="coverImg"
-          @click="selectItem(item)"
-        >
-          <img :src="item.coverImgUrl">
+        <div class="coverImg">
+          <img
+            :src="item.coverImgUrl"
+            @click="selectItem(item)"
+           >
+          <span>{{ item.name }}</span>
         </div>
-        <ul class="songs">
-          <li
-            class="songs-item"
-            v-for="(song, index) in item.tracks"
-            :key="index"
-            >
-            {{index + 1}}. {{song.first}} - {{song.second}}
-          </li>
-        </ul>
       </div>
     </div>
     <Loading :loading="loading"></Loading>
@@ -56,7 +48,7 @@ export default {
     $_getRanklistDetail () {
       getRanklistDetail().then(res => {
         if (res.status === 200) {
-          this.rankList = res.data.list.slice(0, 4)
+          this.rankList = res.data.list
           this.loading = false
         }
       })
@@ -75,15 +67,11 @@ export default {
     margin-top: 20px;
 
     .ranklist-item {
+      float: left; 
       padding: 10px;
-      width: 100%;
       box-sizing: border-box;
-
-      @media screen and (min-width: $width-medium) {
-        float: left;  
-        width: 50%;
-      }
-
+      width: 25%;
+      
       .coverImg {
         width: 100%;
         text-align: center;
@@ -93,34 +81,11 @@ export default {
           max-width: 300px;    
           height: 100%;
           border-radius: 10px;
-        }
 
-        @media screen and (min-width: $width-medium) {
-          float: left;
-          width: 50%;
-
-          img {
-            width: 100%;
-            height: 100%;
+          &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 15px 1px #000;
           }
-        }
-      }
-
-      .songs {
-        width: 100%;
-
-        .songs-item {  
-          padding: 5px 10px; 
-          width: 100%;     
-          height: 30px;
-          box-sizing: border-box;
-          line-height: 30px;
-          @include no-wrap;
-        }
-
-        @media screen and (min-width: $width-medium) {
-          float: left;
-          width: 50%;
         }
       }
     }
