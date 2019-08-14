@@ -10,7 +10,9 @@
       <img class="pic" :src="artist.picUrl">
       <span class="name">{{artist.name}}</span>
     </div>
-    <Loading :loading="loading"></Loading>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 

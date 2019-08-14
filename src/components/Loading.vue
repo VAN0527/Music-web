@@ -29,25 +29,13 @@ export default {
     return {
       loader: 'bars',
       fullPage: false,
+      opacity: 1,
+      zIndex: 999,
       width: 100,
       height: 100,
-      color: '#000',
-      backgroundColor: '#fff'
+      color: '#3d619b',
+      backgroundColor: '#e9e9eb'
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.vld-parent {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  top: 50%;
-  left: 50%;
-  margin-top: -50px;
-  margin-left: -50px;
-  z-index: 999;
-}
-</style>
-

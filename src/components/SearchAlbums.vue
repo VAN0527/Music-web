@@ -4,7 +4,9 @@
       :list="albums"
       @select="selectAlbum"
     ></List>
-    <Loading :loading="loading"></Loading>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 

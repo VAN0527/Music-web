@@ -39,7 +39,9 @@
         <router-view></router-view>
       </div>
     </div>
-    <Loading :loading="this.loading"></Loading>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 

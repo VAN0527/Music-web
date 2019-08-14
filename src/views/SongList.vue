@@ -9,7 +9,9 @@
         @select="selectSongList"
       ></List>
     </div>
-    <Loading :loading="loading"></Loading>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 

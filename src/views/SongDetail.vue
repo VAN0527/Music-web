@@ -4,7 +4,7 @@
       <div class="song">
         <div class="info clearfix">
           <img class="cover" :src="song.picUrl">
-          <h2 class="title">{{song.name}}</h2>
+          <h2 class="title">{{ song.name }}</h2>
           <p class="singer">
             歌手: 
             <span
@@ -40,7 +40,9 @@
         </ul>
       </div>
     </div>
-    <Loading :loading="loading"></Loading>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 
@@ -103,6 +105,8 @@ export default {
       })
     },
     $_formatSong (song) {
+      console.log(song.name)
+      console.log(formatArtists(song.ar))
       return {
         id: song.id,
         name: song.name,
@@ -113,6 +117,7 @@ export default {
     },
     $_formatComments (comments) {
       return comments.map(comment => {
+        console.log(comment.user.nickname)
         return {
           id: comment.commentId,
           content: comment.content,
