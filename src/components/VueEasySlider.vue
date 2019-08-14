@@ -4,7 +4,10 @@
       v-for="item in data"
       :key="item.id"
     >
-      <img :src="item.imageUrl" >
+      <img
+        :src="item.imageUrl"
+        @click="selectImg(item.url)"
+      >
     </SliderItem>
   </Slider>
 </template>
@@ -21,6 +24,13 @@ export default {
     data: {
       type: Array,
       default: []
+    }
+  },
+  methods: {
+    selectImg (url) {
+      if (url) {
+        window.location.href = url
+      }
     }
   }
 }

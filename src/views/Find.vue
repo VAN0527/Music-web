@@ -114,7 +114,8 @@ export default {
     $_formatBanner (banners) {
       return banners.map(banner => {
         return {
-          imageUrl: `${banner.imageUrl}?param=1000y300`
+          imageUrl: banner.imageUrl,
+          url: banner.url
         }
       })
     },
