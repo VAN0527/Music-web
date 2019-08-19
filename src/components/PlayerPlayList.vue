@@ -1,39 +1,56 @@
 <template>
   <div class="playlist-wrapper">
     <h2>播放列表</h2>
+    <div class="playlist-info clearfix">
+      <span 
+        class="clear" 
+        @click="clearPlaylist"
+      >
+        清空播放列表
+      </span>
+      <span>歌曲数: {{ list.length }}</span>
+    </div>
     <div class="playlist">
-      <div class="clear">
-        <span @click="clearPlaylist">清空播放列表</span>
+      <div class="currentSong-info">
+        <img :src="currentSong.picUrl">
+        <div>
+          <span>{{ currentSong.name }}</span>
+          <span
+            v-for="(artist, index) in currentSong.artists"
+            :key="index"
+          >
+            {{ artist.name }}
+          </span>
+        </div>
+        <div class="lyric">
+          <p v-html="this.lyric"></p>
+        </div>
       </div>
-      <div class="playlist">
-        <div
-          class="playlist-item"
-          :class="[song.id === currentSong.id ? 'active' : '']"
+      <div class="playlist-content">
+        <div 
+          class="playlist-item clearfix"
           v-for="song in list"
           :key="song.id"
         >
-          <div class="item-info clearfix">
-            <div class="info">
-              <span class="name">{{song.name}}</span>
-              <div class="artists">
-                <span v-for="artist in song.artists">
-                  {{artist.name}}
-                </span>
-              </div>
-            </div>
-            <span class="duration">{{song.duration}}</span>
+          <span
+            class="play icon-bofang"
+            @click="playSong(song)"
+          >
+          </span>
+          <div class="song">
+            <span class="name">{{ song.name }} - </span>
+            <span
+              class="artists"
+              v-for="(artist, index) in song.artists"
+              :key="index"
+            >
+              {{ artist.name }}
+            </span>
           </div>
-          <div class="item-control">
-            <i
-              class="icon-bofang play"
-              @click="playSong(song)"
-            ></i>
-            <i class="icon-shoucang"></i>
-            <i
-              class="icon-delete delete"
-              @click="deleteSong(song)"
-            ></i>
-          </div>
+          <span
+            class="delete icon-delete"
+            @click="deleteSong(song)"
+          ></span>
         </div>
       </div>
     </div>
@@ -42,13 +59,31 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { getLyric } from 'api/song'
 
 export default {
+  data () {
+    return {
+      lyric: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'list',
       'currentSong'
     ])
+  },
+  watch: {
+    currentSong (newSong, oldSong) {
+      if (newSong.id) {
+        this._getLyric(newSong)
+      }
+    }
+  },
+  created () {
+    if (this.list.length > 0) {
+      this._getLyric(this.currentSong)
+    }
   },
   methods: {
     clearPlaylist () {
@@ -59,6 +94,19 @@ export default {
     },
     deleteSong (song) {
       this.deleteSong(song)
+    },
+    _getLyric (song) {
+      if (song.lyric) {
+        this.lyric = song.lyric
+      } else {
+        getLyric(song.id).then(res => {
+          if (res.status === 200) {
+            const lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
+            this.lyric = lyric
+            this.currentSong.lyric = lyric
+          }
+        })
+      }
     },
     ...mapActions([
       'clearPlaylist',
@@ -82,12 +130,16 @@ export default {
     font-weight: 100;
   }
 
-  .clear {
+  .playlist-info {
     padding: 0 0 5px 10px;
     font-size: 1.3em;
-    cursor: default;
-    
+    text-align: right;
+
     span {
+      padding: 0 10px;
+    }
+
+    .clear {
       cursor: pointer;
 
       &:hover {
@@ -97,53 +149,70 @@ export default {
   }
 
   .playlist {
-    .playlist-item {
-      padding: 5px 10px;
-      border-bottom: 1px solid #fff;
+    .currentSong-info {
+      float: left;
+      width: 300px;
+      text-align: center;
 
-      &:last-child {
-        border-bottom: none;
+      img {
+        width: 100%;
+        border-radius: 10px;
       }
 
-      &.active {
-        background: $bg-color;
-        color: #000;
+      span {
+        padding: 2px 0;
+        display: block;
+        font-size: 1.5em;
       }
 
-      .item-info {
-        padding: 4px 0;
-        height: 40px;
-        
-        .info {
-          float: left;
-          width: 70%;
-          line-height: 20px;
-          @include no-wrap;
-        }
-        
-        .duration {
-          float: right;
-          line-height: 40px;
+      .lyric {
+        p {
+          margin: 0;
+          line-height: 1.5em;
         }
       }
+    }
 
-      .item-control {
-        font-size: 1.3em;
-        
-        i {
-          padding: 0 4px 0 0;
-          cursor: pointer;
+    .playlist-content {
+      margin-left: 320px;
+      font-size: 1.2em;
+
+      .playlist-item {
+        height: 2em;
+        line-height: 2em;
+        border-bottom: 1px solid rgba(185, 185, 185, 0.5);
+
+        &:last-child {
+          border-bottom: none;
         }
 
         .play {
+          padding: 0 5px;
+          font-size: 1.4em;
+          display: inline-block;
+          vertical-align: middle;
+
           &:hover {
             color: $text-hover-color;
+            cursor: pointer;
           }
         }
 
+        .song {
+          @include no-wrap;
+          width: 700px;
+          display: inline-block;
+          // inline-block元素设置overflow:hidden属性导致相邻行内元素向下偏移
+          vertical-align: bottom;
+          // end
+        }
+
         .delete {
+          float: right;
+
           &:hover {
-            color: red;
+            color: $text-hover-color;
+            cursor: pointer;
           }
         }
       }
