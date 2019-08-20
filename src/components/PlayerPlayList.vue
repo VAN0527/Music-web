@@ -23,12 +23,13 @@
           </span>
         </div>
         <div class="lyric">
-          <p v-html="this.lyric"></p>
+          <p v-html="this.lyric" v-if="list.length > 0"></p>
         </div>
       </div>
       <div class="playlist-content">
         <div 
           class="playlist-item clearfix"
+          :class="currentSong.id === song.id ? 'active' : ''"
           v-for="song in list"
           :key="song.id"
         >
@@ -101,9 +102,12 @@ export default {
       } else {
         getLyric(song.id).then(res => {
           if (res.status === 200) {
-            const lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
-            this.lyric = lyric
-            this.currentSong.lyric = lyric
+            if (!res.data.nolyric) {
+              console.log(res.data.lrc.lyric)
+              const lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
+              this.lyric = lyric
+              this.currentSong.lyric = lyric
+            }
           }
         })
       }
@@ -184,6 +188,11 @@ export default {
 
         &:last-child {
           border-bottom: none;
+        }
+
+        &.active {
+          background-color: $bg-color;
+          color: $color-primary;
         }
 
         .play {
