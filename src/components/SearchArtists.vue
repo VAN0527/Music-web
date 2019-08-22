@@ -1,14 +1,23 @@
 <template>
-  <div class="artists clearfix">
-    <div 
-      class="artist-item"
-      v-show="!loading"
-      v-for="artist in artists"
-      :key="artist.id"
-      @click="selectArtist(artist.id)"
-    >
-      <img class="pic" :src="artist.picUrl">
-      <span class="name">{{artist.name}}</span>
+  <div class="artists">
+    <div v-show="!loading" >
+      <ul class="clearfix" >
+        <li
+          class="artist-item"
+          v-for="artist in artists"
+          :key="artist.id"
+          @click="selectArtist(artist.id)"
+        >
+          <img class="pic" :src="artist.picUrl">
+          <span class="name">{{artist.name}}</span>
+        </li>
+      </ul>
+      <div class="pagination">
+        <Pagination 
+          :pageCount="pageCount" 
+          @selectPage="selectPage"
+        ></Pagination>
+      </div>
     </div>
     <div class="loading">
       <Loading :loading="loading"></Loading>
@@ -18,16 +27,20 @@
 
 <script>
 import Loading from 'components/Loading'
+import Pagination from 'components/Pagination'
 import { getSearchResult } from 'api/search.js'
+import { SEARCH_LIMIT } from 'utils/config.js'
 
 export default {
   components: {
+    Pagination,
     Loading
   },
   data () {
     return {
       artists: [],
-      loading: true
+      loading: true,
+      pageCount: 0
     }
   },
   created () {
@@ -42,14 +55,20 @@ export default {
         }
       })
     },
-    $_getSearchResult () {
+    selectPage (page) {
+      const offset = (page - 1) * SEARCH_LIMIT
+      this.loading = true
+      this.$_getSearchResult(offset)
+    },
+    $_getSearchResult (offset = 0) {
       const query = this.$route.query
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type).then(res => {
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
         if (res.status === 200) {
           this.artists = this.$_formatArtists(res.data.result.artists)
+          this.pageCount = Math.ceil(res.data.result.artistCount / SEARCH_LIMIT)
           this.loading = false
         }
       })
@@ -96,6 +115,11 @@ export default {
         color: $text-hover-color;
       }
     }
+  }
+
+  .pagination {
+    padding: 10px;
+    text-align: center;
   }
 }
 </style>

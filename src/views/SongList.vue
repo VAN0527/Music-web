@@ -8,6 +8,12 @@
         :list="songlist" 
         @select="selectSongList"
       ></List>
+      <div class="pagination">
+        <Pagination 
+          :pageCount="pageCount" 
+          @selectPage="selectPage"
+        ></Pagination>
+      </div>
     </div>
     <div class="loading">
       <Loading :loading="loading"></Loading>
@@ -17,20 +23,24 @@
 
 <script>
 import List from 'components/List'
+import Pagination from 'components/Pagination'
 import Loading from 'components/Loading'
 import SongListCategory from 'components/SongListCategory'
 import { getSonglist } from 'api/songlist.js'
+import { SONGLIST_LIMIT } from 'utils/config.js'
 
 export default {
   components: {
     List,
     Loading,
-    SongListCategory
+    SongListCategory,
+    Pagination
   },
   data () {
     return {
       songlist: [],
-      loading: true
+      loading: true,
+      pageCount: 0
     }
   },
   computed: {
@@ -40,11 +50,12 @@ export default {
   },
   watch: {
     '$route' () {
-      this.$_getSonglist(this.cat)
+      this.loading = true
+      this.$_getSonglist()
     }
   },
   mounted () {
-    this.$_getSonglist(this.cat)
+    this.$_getSonglist()
   },
   methods: {
     selectItem (cat) {
@@ -63,10 +74,16 @@ export default {
         }
       })
     },
-    $_getSonglist () {
-      getSonglist(this.cat).then(res => {
+    selectPage (page) {
+      const offset = (page - 1) * SONGLIST_LIMIT
+      this.loading = true
+      this.$_getSonglist(offset)
+    },
+    $_getSonglist (offset = 0) {
+      getSonglist(this.cat, offset).then(res => {
         this.songlist = this.$_formatList(res.data.playlists)
         this.loading = false
+        this.pageCount = Math.ceil(res.data.total / SONGLIST_LIMIT)
       })
     },
     $_formatList (list) {
@@ -87,5 +104,10 @@ export default {
 
 .songlist {
   @include wrap-center;
+
+  .pagination {
+    padding: 10px;
+    text-align: center;
+  }
 }
 </style>

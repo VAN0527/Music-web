@@ -10,3 +10,6 @@ export const searchCat = {
   albums: '专辑',
   playlists: '歌单'
 }
+
+export const SONGLIST_LIMIT = 40
+export const SEARCH_LIMIT = 30

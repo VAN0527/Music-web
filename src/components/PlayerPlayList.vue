@@ -103,7 +103,6 @@ export default {
         getLyric(song.id).then(res => {
           if (res.status === 200) {
             if (!res.data.nolyric) {
-              console.log(res.data.lrc.lyric)
               const lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
               this.lyric = lyric
               this.currentSong.lyric = lyric

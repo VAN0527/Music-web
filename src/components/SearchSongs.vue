@@ -1,68 +1,82 @@
 <template>
   <div class="songs">
-    <ul class="songlist">
-      <li class="songlist-item clearfix">
-        <div class="name">
-          <span>歌曲名</span>
-        </div>
-        <div class="artists">
-          <span>歌手</span>
-        </div>
-        <div class="albums">
-          <span>专辑</span>
-        </div>
-        <div class="duration">
-          <span>时长</span>
-        </div>
-      </li>
-      <li
-        class="songlist-item clearfix"
-        v-for="song in songs"
-        :key="song.id"
-      >
-        <div class="name">
-          <i
-            class="icon-bofang play"
-            @click="play(song.id)"
-          ></i>
-          <span @click="selectSong(song.id)">{{song.name}}</span>
-        </div>
-        <div class="artists">
-          <span 
-            v-for="artist in song.artists"
-            :key="artist.id"
-            @click="selectArtist(artist.id)"
-          >
-            {{artist.name}}
-          </span>
-        </div>
-        <div class="albums">
-          <span @click="selectAlbum(song.album.id)">{{song.album.name}}</span>
-        </div>
-        <div class="duration">
-          <span>{{song.duration}}</span>
-        </div>
-      </li>
-    </ul>
-    <Loading :loading="loading"></Loading>
+    <div class="songlist" v-show="!loading">
+      <ul>
+        <li class="songlist-item clearfix">
+          <div class="name">
+            <span>歌曲名</span>
+          </div>
+          <div class="artists">
+            <span>歌手</span>
+          </div>
+          <div class="albums">
+            <span>专辑</span>
+          </div>
+          <div class="duration">
+            <span>时长</span>
+          </div>
+        </li>
+        <li
+          class="songlist-item clearfix"
+          v-for="song in songs"
+          :key="song.id"
+        >
+          <div class="name">
+            <i
+              class="icon-bofang play"
+              @click="play(song.id)"
+            ></i>
+            <span @click="selectSong(song.id)">{{song.name}}</span>
+          </div>
+          <div class="artists">
+            <span 
+              v-for="artist in song.artists"
+              :key="artist.id"
+              @click="selectArtist(artist.id)"
+            >
+              {{artist.name}}
+            </span>
+          </div>
+          <div class="albums">
+            <span @click="selectAlbum(song.album.id)">{{song.album.name}}</span>
+          </div>
+          <div class="duration">
+            <span>{{song.duration}}</span>
+          </div>
+        </li>
+      </ul>
+      <div class="pagination">
+        <Pagination 
+          :pageCount="pageCount" 
+          @selectPage="selectPage"
+        ></Pagination>
+      </div>
+    </div>
+    <div class="loading">
+      <Loading :loading="loading"></Loading>
+    </div>
   </div>
 </template>
 
 <script>
 import Loading from 'components/Loading'
+import Pagination from 'components/Pagination'
 import { getSearchResult } from 'api/search.js'
 import { getSong } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'
+import { SEARCH_LIMIT } from 'utils/config'
 
 export default {
   components: {
-    Loading
+    Loading,
+    Pagination
   },
   data () {
     return {
       songs: [],
-      loading: true
+      loading: true,
+      pageCount: 0
     }
   },
   watch: {
@@ -103,14 +117,21 @@ export default {
         }
       })
     },
-    $_getSearchResult () {
+    selectPage (page) {
+      const offset = (page - 1) * SEARCH_LIMIT
+      this.loading = true
+      this.$_getSearchResult(offset)
+    },
+    $_getSearchResult (offset = 0) {
       const query = this.$route.query
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type).then(res => {
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
         if (res.status === 200) {
-          this.songs = this.$_formatSongList(res.data.result.songs)
+          this.songs = this.$_formatSongList
+          (res.data.result.songs)
+          this.pageCount = Math.ceil(res.data.result.songCount / SEARCH_LIMIT)
           this.loading = false
         }
       })
@@ -228,6 +249,11 @@ export default {
           }
         }
       }
+    }
+
+    .pagination {
+      padding: 10px;
+      text-align: center;
     }
   }
 }
