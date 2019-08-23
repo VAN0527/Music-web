@@ -3,8 +3,8 @@
     <span class="prev" @click="prevPage">上一页</span>
     <span
       class="pagination-item"
-      :class="currentPage === page ? 'active' : ''"
-      v-for="(page, i) in pageShow"
+      :class="{active: currentPage === page}"
+      v-for="(page, i) in pages"
       :key="i"
       @click=selectPage(page)
     >
@@ -27,7 +27,7 @@ export default {
     }
   },
   computed: {
-    pageShow () {
+    pages () {
       const pageCount = this.pageCount
       const currentPage = this.currentPage
       let page = []
@@ -65,9 +65,11 @@ export default {
       }
     },
     selectPage (page) {
-      page = Number(page)
+      if (page === '...') return
+      if (page === this.currentPage) return
+
       if (page > 0 && page <= this.pageCount) {
-        this.currentPage = page
+        this.currentPage = Number(page)
         this.inputPage = 1
         this.$emit('selectPage', page)
       } else {
@@ -86,15 +88,6 @@ export default {
 
   .next,
   .prev,
-  .pagination-item {
-    &:hover {
-      color: $color;
-      cursor: pointer;
-    }
-  }
-
-  .next,
-  .prev,
   .select-page {
     margin: 0 5px;
     padding: 5px;
@@ -109,8 +102,22 @@ export default {
     }
   }
 
-  .pagination-item { 
+  .pagination-item {
+    margin: 0 5px;
+    padding: 5px;
+    width: 2em;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      color: $text-hover-color;
+    }
+
     &.active {
+      background-color: $bg-color;
       color: $text-hover-color;
     }
   }
