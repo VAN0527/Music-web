@@ -1,6 +1,6 @@
 <template>
   <div class="songdetail">
-    <div class="songdetail-wrapper" v-show="!loading">
+    <div class="songdetail-wrapper" v-if="!loading">
       <div class="song">
         <div class="info clearfix">
           <img class="cover" :src="song.picUrl">
@@ -57,7 +57,7 @@ export default {
   },
   data () {
     return {
-      song: [],
+      song: {},
       hotComments: [],
       loading: true
     }
@@ -68,7 +68,7 @@ export default {
       this.$_getComments()
     }
   },
-  created () {
+  mounted () {
     this.$_getSong()
     this.$_getComments()
   },
@@ -105,8 +105,6 @@ export default {
       })
     },
     $_formatSong (song) {
-      console.log(song.name)
-      console.log(formatArtists(song.ar))
       return {
         id: song.id,
         name: song.name,
@@ -117,7 +115,6 @@ export default {
     },
     $_formatComments (comments) {
       return comments.map(comment => {
-        console.log(comment.user.nickname)
         return {
           id: comment.commentId,
           content: comment.content,
