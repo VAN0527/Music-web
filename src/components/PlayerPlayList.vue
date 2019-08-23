@@ -1,7 +1,7 @@
 <template>
   <div class="playlist-wrapper">
     <h2>播放列表</h2>
-    <div class="playlist-info clearfix">
+    <div class="playlist-info">
       <span 
         class="clear" 
         @click="clearPlaylist"
@@ -10,7 +10,7 @@
       </span>
       <span>歌曲数: {{ list.length }}</span>
     </div>
-    <div class="playlist">
+    <div class="playlist clearfix">
       <div class="currentSong-info">
         <img :src="currentSong.picUrl">
         <div>
@@ -217,7 +217,8 @@ export default {
 
         .delete {
           float: right;
-
+          margin-right: 5px;
+          
           &:hover {
             color: $text-hover-color;
             cursor: pointer;
