@@ -5,6 +5,7 @@
         class="playlist-item" 
         v-for="song in list"
         :key="song.id"
+        :class="{'not-play': song.url === '' }"
       > 
         <span class="play-icon">
           <i
@@ -25,7 +26,7 @@
             </span>
           </div>
         </div>
-        <span class="duration">{{song.duration}}</span>
+        <span class="duration">{{ song.duration }}</span>
       </li>
     </ul>
   </div>
@@ -67,6 +68,10 @@ export default {
     
     &:last-child {
       border-bottom: none;
+    }
+    
+    &.not-play {
+      color:rgb(120, 120, 120)
     }
 
     .play-icon {

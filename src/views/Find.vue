@@ -19,7 +19,7 @@
           <div class="playlist">
             <div 
               class="all-play"
-              @click="playAll(newMusic)"
+              @click="playAllList(playList)"
             >
               <i class="icon-bofang"></i>
               <span> 全部播放</span>
@@ -44,6 +44,7 @@ import List from 'components/List'
 import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
 import { getBanner, getRecommend, getNewMusic, getHotSingers } from 'api/find.js'
+import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'
 
@@ -62,10 +63,18 @@ export default {
       loading: true
     }
   },
+  computed: {
+    playList () {
+      return this.newMusic.filter(song => song.url !== '')
+    }
+  },
   created () {
     this.$_getData()
   },
   methods: {
+    playAllList (list) {
+      this.playAll(list)
+    },
     selectRecommend (item) {
       this.$router.push({
         path: '/musiclist',
@@ -74,8 +83,12 @@ export default {
         }
       })
     },
-    selectItem (item) {
-      this.insertSong(item)
+    selectItem (song) {
+      if (song.url === '') {
+        alert('此歌曲无法播放')
+      } else {
+        this.insertSong(song)
+      }
     },
     $_getBanner () {
       getBanner().then(res => {
@@ -93,13 +106,32 @@ export default {
       })
     },
     $_getNewMusic () {
-      getNewMusic().then(res => {
+      getNewMusic()
+        .then(res => {
+          if (res.status === 200) {
+            const songs = this.$_formatSong(res.data.data.slice(0, 10))
+            this.newMusic = songs
+          }
+        })
+        .then(() => this.$_getUrl())
+        .then(() => this.loading = false)
+    },
+    $_getUrl () {
+      const ids = this.newMusic.map(song => song.id).join()
+      return getUrl(ids).then(res => {
         if (res.status === 200) {
-          const songs = this.$_formatSong(res.data.data.slice(0, 10))
-          this.newMusic = songs
-          this.loading = false
+          let data = {}
+          res.data.data.forEach(item => {
+            data[item.id] = item.url
+          })
+          this.newMusic.map(song => song.url = data[song.id] || '')
         }
       })
+    },
+    $_getData () {
+      this.$_getBanner()
+      this.$_getRecommend()
+      this.$_getNewMusic()
     },
     $_formatSong (songs) {
       return songs.map(song => {
@@ -109,7 +141,7 @@ export default {
           duration: formatDuration(song.duration),
           artists: formatArtists(song.artists),
           picUrl: `${song.album.picUrl}?param=400y400`,
-          url:`https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+          url: ''
         }
       })
     },
@@ -120,11 +152,6 @@ export default {
           url: banner.url
         }
       })
-    },
-    $_getData () {
-      this.$_getBanner()
-      this.$_getRecommend()
-      this.$_getNewMusic()
     },
     ...mapActions([
       'insertSong',

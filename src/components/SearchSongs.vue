@@ -18,13 +18,14 @@
         </li>
         <li
           class="songlist-item clearfix"
+          :class="{'not-play': song.url === ''}"
           v-for="song in songs"
           :key="song.id"
         >
           <div class="name">
             <i
               class="icon-bofang play"
-              @click="play(song.id)"
+              @click="play(song)"
             ></i>
             <span @click="selectSong(song.id)">{{song.name}}</span>
           </div>
@@ -62,7 +63,7 @@
 import Loading from 'components/Loading'
 import Pagination from 'components/Pagination'
 import { getSearchResult } from 'api/search.js'
-import { getSong } from 'api/song.js'
+import { getSong, getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'
 import { SEARCH_LIMIT } from 'utils/config'
@@ -88,10 +89,12 @@ export default {
     this.$_getSearchResult()
   },
   methods: {
-    play (id) {
-      this.$_getSong(id).then(song => {
+    play (song) {
+      if (song.url === '') {
+        alert('此歌曲无法播放')
+      } else {
         this.insertSong(song)
-      })
+      }
     },
     selectSong (id) {
       this.$router.push({
@@ -127,19 +130,39 @@ export default {
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
-        if (res.status === 200) {
-          this.songs = this.$_formatSongList
-          (res.data.result.songs)
-          this.pageCount = Math.ceil(res.data.result.songCount / SEARCH_LIMIT)
-          this.loading = false
-        }
-      })
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset)
+        .then(res => {
+          if (res.status === 200) {
+            this.songs = this.$_formatSongList(res.data.result.songs)
+            this.pageCount = Math.ceil(res.data.result.songCount / SEARCH_LIMIT)
+          }
+        })
+        .then(() => this.$_getSong())
+        .then(() => this.$_getUrl())
+        .then(() => this.loading = false)
     },
     $_getSong (id) {
-      return getSong(id).then(res => {
+      const ids = this.songs.map(song => song.id).join()
+      return getSong(ids)
+        .then(res => {
+          if (res.status === 200) {
+            let data = {}
+            res.data.songs.forEach(item => {
+              data[item.id] = this.$_formatSong(item)
+            })
+            this.songs.map(song => song = data[song.id])
+          }
+        })
+    },
+    $_getUrl () {
+      const ids = this.songs.map(song => song.id).join()
+      return getUrl(ids).then(res => {
         if (res.status === 200) {
-          return this.$_formatSong(res.data.songs[0])
+          let data = {}
+          res.data.data.forEach(item => {
+            data[item.id] = item.url
+          })
+          this.songs.map(song => song.url = data[song.id] || '')
         }
       })
     },
@@ -164,7 +187,7 @@ export default {
         artists: formatArtists(song.ar),
         duration: formatDuration(song.dt),
         picUrl: `${song.al.picUrl}?param=400y400`,
-        url: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+        url: ''
       }
     },
     ...mapActions([
@@ -202,6 +225,9 @@ export default {
         border-bottom: none;
       }
 
+      &.not-play {
+        color: rgb(120, 120, 120)
+      }
       
       div {
         float: left;

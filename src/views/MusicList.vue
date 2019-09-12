@@ -13,12 +13,9 @@
           <div class="btns">
             <div 
               class="btn"
-              @click.stop="playAll(data.songs)"
+              @click.stop="playAllList(playList)"
             >
               <span>PLAY</span>
-            </div>
-            <div class="btn">
-              <span>收藏</span>
             </div>
           </div>
           <p class="creater">创建者: {{data.creator}}</p>
@@ -43,6 +40,7 @@ import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
 import { mapActions } from 'vuex'
 import { getMusicList, getAlbumSongs } from 'api/musiclist.js'
+import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 
 export default {
@@ -65,6 +63,12 @@ export default {
   computed: {
     id () {
       return this.$route.query.id
+    },
+    playList () {
+      return this.data.songs.filter(song => song.url !== '')
+    },
+    canPlayAll () {
+      return !this.data.songs.every(song => song.url === '')
     }
   },
   created () {
@@ -76,26 +80,41 @@ export default {
     }
   },
   methods: {
+    playAllList (list) {
+      if (this.canPlayAll) {
+        this.playAll(list)
+      } else {
+        alert ('此列表歌曲无法播放')
+      }
+    },
     selectItem (song) {
-      this.insertSong(song)
+      if (song.url === '') {
+        alert('此歌曲无法播放')
+      } else {
+        this.insertSong(song)
+      }
     },
     $_getMusicList () {
-      getMusicList(this.id).then(res => {
-        if (res.status === 200) {
-          const musiclist = res.data.playlist
-          this.data = this.$_formatMusicList(musiclist)
-          this.loading = false
-        }
-      })
+      getMusicList(this.id)
+        .then(res => {
+          if (res.status === 200) {
+            const musiclist = res.data.playlist
+            this.data = this.$_formatMusicList(musiclist)
+          }
+        })
+        .then(() => this.$_getUrl())
+        .then(() => this.loading = false)
     },
     $_getAlbumSongs () {
-      getAlbumSongs(this.id).then(res => {
-        if (res.status === 200) {
-          const album = res.data
-          this.data = this.$_formatAlbum(album)
-          this.loading = false
-        }
-      })
+      getAlbumSongs(this.id)
+        .then(res => {
+          if (res.status === 200) {
+            const album = res.data
+            this.data = this.$_formatAlbum(album)
+          }
+        })
+        .then(() => this.$_getUrl())
+        .then(() => this.loading = false)
     },
     $_formatMusicList (musiclist) {
       return {
@@ -123,8 +142,18 @@ export default {
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
           picUrl: `${item.al.picUrl}?param=400y400`,
-          url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3` 
+          url: '' 
         }
+      })
+    },
+    $_getUrl () {
+      const ids = this.data.songs.map(song => song.id).join()
+      return getUrl(ids).then(res => {
+        let data = {}
+        res.data.data.forEach(item => {
+          data[item.id] = item.url
+        })
+        this.data.songs.map(song => song.url = data[song.id] || '')
       })
     },
     $_getData () {

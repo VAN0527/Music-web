@@ -21,14 +21,14 @@
         <div class="tab-bar">
           <span
             class="tab-item"
-            :class="songsActive" 
+            :class="{active: tab === 'songs'}" 
             @click="toggleTab('songs')"
           >
             歌曲
           </span>
           <span 
             class="tab-item" 
-            :class="albumsActive"
+            :class="{active: tab === 'albums'}" 
             @click="toggleTab('albums')"
           >
             专辑
@@ -59,14 +59,6 @@ export default {
       tab: 'songs',
       loading: true
     }
-  },
-  computed: {
-    songsActive () {
-      return this.tab === 'songs' ? 'active' : ''
-    },
-    albumsActive () {
-      return this.tab === 'albums' ? 'active' : ''
-    },
   },
   watch: {
     '$route' () {

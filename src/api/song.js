@@ -13,6 +13,12 @@ export function getLyric (id) {
   return axios.get(url)
 }
 
+export function getUrl (ids) {
+  const url = `${HOST}/song/url?id=${ids}`
+
+  return axios.get(url)
+}
+
 export function getComment (id) {
   const url = `${HOST}/comment/music?id=${id}`
 

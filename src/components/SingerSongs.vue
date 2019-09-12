@@ -2,7 +2,7 @@
   <div class="songs">
     <div 
       class="all-play"
-      @click="playAll(songs)"
+      @click="playAllList(playList)"
     >
       <i class="icon-bofang"></i>
       <span> 全部播放</span>
@@ -17,6 +17,7 @@
 <script>
 import PlayList from 'components/PlayList'
 import { getSingerSongsAndDesc } from 'api/singer.js'
+import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
 import { mapActions } from 'vuex'
 
@@ -29,6 +30,11 @@ export default {
       songs: []
     }
   },
+  computed: {
+    playList () {
+      return this.songs.filter(song => song.url !== '')
+    }
+  },
   watch: {
     '$route' () {
       this.$_getSingerSongs()
@@ -38,15 +44,24 @@ export default {
     this.$_getSingerSongs()
   },
   methods: {
-    selectItem (item) {
-      this.insertSong(item)
+    playAllList (list) {
+      this.playAll(list)
+    },
+    selectItem (song) {
+      if (song.url === '') {
+        alert('此歌曲无法播放')
+      } else {
+        this.insertSong(song)
+      }
     },
     $_getSingerSongs () {
-      getSingerSongsAndDesc(this.$route.query.id).then(res => {
-        if (res.status === 200) {
-          this.songs = this.$_formatSongs(res.data.hotSongs)
-        }
-      })
+      getSingerSongsAndDesc(this.$route.query.id)
+        .then(res => {
+          if (res.status === 200) {
+            this.songs = this.$_formatSongs(res.data.hotSongs)
+          }
+        })
+        .then(() => this.$_getUrl())
     },
     $_formatSongs (songs) {
       return songs.map(item => {
@@ -56,7 +71,19 @@ export default {
           artists: formatArtists(item.ar),
           duration: formatDuration(item.dt),
           picUrl: `${item.al.picUrl}?param=400y400`,
-          url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
+          url: ''
+        }
+      })
+    },
+    $_getUrl () {
+      const ids = this.songs.map(song => song.id).join()
+      return getUrl(ids).then(res => {
+        if (res.status === 200) {
+          let data = {}
+          res.data.data.forEach(item => {
+            data[item.id] = item.url
+          })
+          this.songs.map(song => song.url = data[song.id] || '')
         }
       })
     },
