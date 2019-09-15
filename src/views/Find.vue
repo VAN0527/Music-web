@@ -46,7 +46,7 @@ import Loading from 'components/Loading'
 import { getBanner, getRecommend, getNewMusic, getHotSingers } from 'api/find.js'
 import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -66,7 +66,10 @@ export default {
   computed: {
     playList () {
       return this.newMusic.filter(song => song.url !== '')
-    }
+    },
+    ...mapGetters([
+      'currentSong'
+    ])
   },
   created () {
     this.$_getData()
@@ -87,6 +90,7 @@ export default {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {
+        if (this.currentSong.id === song.id) return
         this.insertSong(song)
       }
     },

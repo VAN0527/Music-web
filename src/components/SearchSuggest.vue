@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { getSearchSuggest } from 'api/search.js'
 import { getSong, getUrl } from 'api/song.js'
 import { searchCat } from 'utils/config.js'
@@ -42,6 +42,11 @@ export default {
     return {
       suggests: []
     }
+  },
+  computed: {
+    ...mapGetters([
+      'currentSong'
+    ])
   },
   watch: {
     keyword (newKeyword) {
@@ -68,6 +73,7 @@ export default {
             if (song.url === '') {
               alert('此歌曲无法播放')
             } else {
+              if (this.currentSong.id === song.id) return
               this.insertSong(song)
             }
           })

@@ -35,7 +35,7 @@
         >
           <span
             class="play icon-bofang"
-            @click="playSong(song)"
+            @click="selectPlay(song)"
           >
           </span>
           <div class="song">
@@ -77,26 +77,27 @@ export default {
   watch: {
     currentSong (newSong, oldSong) {
       if (newSong.id) {
-        this._getLyric(newSong)
+        this.$_getLyric(newSong)
       }
     }
   },
   created () {
     if (this.list.length > 0) {
-      this._getLyric(this.currentSong)
+      this.$_getLyric(this.currentSong)
     }
   },
   methods: {
     clearPlaylist () {
       this.clearPlaylist()
     },
-    playSong (song) {
+    selectPlay (song) {
+      if (this.currentSong.id === song.id) return
       this.playSong(song)
     },
     deleteSong (song) {
       this.deleteSong(song)
     },
-    _getLyric (song) {
+    $_getLyric (song) {
       if (song.lyric) {
         this.lyric = song.lyric
       } else {

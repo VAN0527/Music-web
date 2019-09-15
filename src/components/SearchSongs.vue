@@ -65,7 +65,7 @@ import Pagination from 'components/Pagination'
 import { getSearchResult } from 'api/search.js'
 import { getSong, getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { SEARCH_LIMIT } from 'utils/config'
 
 export default {
@@ -80,6 +80,11 @@ export default {
       pageCount: 0
     }
   },
+  computed: {
+    ...mapGetters([
+      'currentSong'
+    ])
+  },
   watch: {
     '$route' () {
       this.$_getSearchResult()
@@ -93,6 +98,7 @@ export default {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {
+        if (this.currentSong.id === song.id) return
         this.insertSong(song)
       }
     },

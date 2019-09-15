@@ -9,7 +9,7 @@
     </div>
     <PlayList
       :list="songs"
-      @select="selectItem"
+      @select="selectSong"
     ></PlayList>
   </div>
 </template>
@@ -19,7 +19,7 @@ import PlayList from 'components/PlayList'
 import { getSingerSongsAndDesc } from 'api/singer.js'
 import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -33,7 +33,10 @@ export default {
   computed: {
     playList () {
       return this.songs.filter(song => song.url !== '')
-    }
+    },
+    ...mapGetters([
+      'currentSong'
+    ])
   },
   watch: {
     '$route' () {
@@ -47,10 +50,11 @@ export default {
     playAllList (list) {
       this.playAll(list)
     },
-    selectItem (song) {
+    selectSong (song) {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {
+        if (this.currentSong.id === song.id) return
         this.insertSong(song)
       }
     },

@@ -38,7 +38,7 @@
 <script>
 import PlayList from 'components/PlayList'
 import Loading from 'components/Loading'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { getMusicList, getAlbumSongs } from 'api/musiclist.js'
 import { getUrl } from 'api/song.js'
 import { formatDuration, formatArtists } from 'utils/song.js'
@@ -69,7 +69,10 @@ export default {
     },
     canPlayAll () {
       return !this.data.songs.every(song => song.url === '')
-    }
+    },
+    ...mapGetters([
+      'currentSong'
+    ])
   },
   created () {
     this.$_getData()
@@ -91,6 +94,7 @@ export default {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {
+        if (this.currentSong.id === song.id) return
         this.insertSong(song)
       }
     },
