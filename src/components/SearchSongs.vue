@@ -141,7 +141,7 @@ export default {
         .then(() => this.$_getUrl())
         .then(() => this.loading = false)
     },
-    $_getSong (id) {
+    $_getSong () {
       const ids = this.songs.map(song => song.id).join()
       return getSong(ids)
         .then(res => {
@@ -150,7 +150,12 @@ export default {
             res.data.songs.forEach(item => {
               data[item.id] = this.$_formatSong(item)
             })
-            this.songs.map(song => song = data[song.id])
+
+            console.log(this.songs.map(song => {
+              let s = data[song.id]
+              song.duration = s.duration
+              song.picUrl = s.picUrl
+            }))
           }
         })
     },
@@ -162,7 +167,7 @@ export default {
           res.data.data.forEach(item => {
             data[item.id] = item.url
           })
-          this.songs.map(song => song.url = data[song.id] || '')
+          // console.log(this.songs.map(song => song.url = data[song.id] || ''))
         }
       })
     },

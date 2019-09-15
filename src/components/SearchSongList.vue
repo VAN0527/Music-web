@@ -44,7 +44,10 @@ export default {
   methods: {
     selectSongList (songlist) {
       this.$router.push({
-        path: `/musiclist/${songlist.id}`
+        path: '/musiclist',
+        query: {
+          id: songlist.id
+        }
       })
     },
     selectPage (page) {
