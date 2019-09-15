@@ -26,7 +26,7 @@
             </div>
             <PlayList 
               :list="newMusic"
-              @select="selectItem"
+              @select="selectSong"
             ></PlayList>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default {
         }
       })
     },
-    selectItem (song) {
+    selectSong (song) {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {

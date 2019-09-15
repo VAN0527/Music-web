@@ -79,12 +79,13 @@ export default {
       })
     },
     $_getSingerDesc () {
-      getSingerSongsAndDesc(this.$route.query.id).then(res => {
-        if (res.status === 200) {
-          this.desc = res.data.artist
-          this.loading = false
-        }
-      })
+      getSingerSongsAndDesc(this.$route.query.id)
+        .then(res => {
+          if (res.status === 200) {
+            this.desc = res.data.artist
+          }
+        })
+        .then(() => this.loading = false)
     }
   }
 }

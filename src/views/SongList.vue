@@ -80,11 +80,12 @@ export default {
       this.$_getSonglist(offset)
     },
     $_getSonglist (offset = 0) {
-      getSonglist(this.cat, offset).then(res => {
-        this.songlist = this.$_formatList(res.data.playlists)
-        this.loading = false
-        this.pageCount = Math.ceil(res.data.total / SONGLIST_LIMIT)
-      })
+      getSonglist(this.cat, offset)
+        .then(res => {
+          this.songlist = this.$_formatList(res.data.playlists)
+          this.pageCount = Math.ceil(res.data.total / SONGLIST_LIMIT)
+        })
+        .then(() => this.loading = false)
     },
     $_formatList (list) {
       return list.map(item => {

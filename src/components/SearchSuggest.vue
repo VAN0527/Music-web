@@ -27,7 +27,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { getSearchSuggest } from 'api/search.js'
-import { getSong } from 'api/song.js'
+import { getSong, getUrl } from 'api/song.js'
 import { searchCat } from 'utils/config.js'
 import { formatArtists, formatDuration } from 'utils/song.js'
 
@@ -64,7 +64,13 @@ export default {
           this.$_selectSongList(id)
           break
         case '歌曲':
-          this.$_selectSong(id).then(song => this.insertSong(song))
+          this.$_selectSong(id).then(song => {
+            if (song.url === '') {
+              alert('此歌曲无法播放')
+            } else {
+              this.insertSong(song)
+            }
+          })
           break
         default:
           return
@@ -90,9 +96,23 @@ export default {
       })
     },
     $_selectSong (id) {
-      return getSong(id).then(res => {
+      return getSong(id)
+        .then(res => {
+          if (res.status === 200) {
+            return this.$_formatSong(res.data.songs[0])
+          }
+        })
+        .then(song => {
+          return this.$_getUrl(song.id).then(url => {
+            song.url = url
+            return song
+          })
+        })
+    },
+    $_getUrl (id) {
+      return getUrl(id).then(res => {
         if (res.status === 200) {
-          return this.$_formatSong(res.data.songs[0])
+          return res.data.data[0].url
         }
       })
     },
@@ -113,7 +133,7 @@ export default {
         artists: formatArtists(song.ar),
         duration: formatDuration(song.dt),
         picUrl: `${song.al.picUrl}?param=400y400`,
-        url: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`
+        url: ''
       }
     },
     $_formatSuggests (categories, suggests) {

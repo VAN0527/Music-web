@@ -48,12 +48,13 @@ export default {
       })
     },
     $_getRanklistDetail () {
-      getRanklistDetail().then(res => {
-        if (res.status === 200) {
-          this.rankList = res.data.list
-          this.loading = false
-        }
-      })
+      getRanklistDetail()
+        .then(res => {
+          if (res.status === 200) {
+            this.rankList = res.data.list
+          }
+        })
+        .then(() => this.loading = false)
     }
   }
 }

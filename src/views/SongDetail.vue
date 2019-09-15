@@ -97,12 +97,13 @@ export default {
       })
     },
     $_getComments () {
-      getComment(this.$route.query.id).then(res => {
-        if (res.status === 200) {
-          this.hotComments = this.$_formatComments(res.data.hotComments)
-          this.loading = false
-        }
-      })
+      getComment(this.$route.query.id)
+        .then(res => {
+          if (res.status === 200) {
+            this.hotComments = this.$_formatComment(res.data.hotComments)
+          }
+        })
+        .then(() => this.loading = false)
     },
     $_formatSong (song) {
       return {

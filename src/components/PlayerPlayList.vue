@@ -102,11 +102,14 @@ export default {
       } else {
         getLyric(song.id).then(res => {
           if (res.status === 200) {
-            if (!res.data.nolyric) {
-              const lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
-              this.lyric = lyric
-              this.currentSong.lyric = lyric
+            let lyric = ''
+            if (res.data.uncollected || res.data.nolyric) {
+              lyric = ''
+            } else {
+              lyric = res.data.lrc.lyric.replace(/\[.+\]/g, '<br/>')
             }
+            this.lyric = lyric
+            this.currentSong.lyric = lyric
           }
         })
       }

@@ -65,13 +65,14 @@ export default {
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
-        if (res.status === 200) {
-          this.artists = this.$_formatArtists(res.data.result.artists)
-          this.pageCount = Math.ceil(res.data.result.artistCount / SEARCH_LIMIT)
-          this.loading = false
-        }
-      })
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset)
+        .then(res => {
+          if (res.status === 200) {
+            this.artists = this.$_formatArtists(res.data.result.artists)
+            this.pageCount = Math.ceil(res.data.result.artistCount / SEARCH_LIMIT)
+          }
+        })
+        .then(() => this.loading = false)
     },
     $_formatArtists (artists) {
       return artists.map(artist => {

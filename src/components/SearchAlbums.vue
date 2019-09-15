@@ -61,13 +61,14 @@ export default {
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
-        if (res.status === 200) {
-          this.albums = formatAlbums(res.data.result.albums)
-          this.pageCount = Math.ceil(res.data.result.albumCount / SEARCH_LIMIT)
-          this.loading = false
-        }
-      })
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset)
+        .then(res => {
+          if (res.status === 200) {
+            this.albums = formatAlbums(res.data.result.albums)
+            this.pageCount = Math.ceil(res.data.result.albumCount / SEARCH_LIMIT)
+          }
+        })
+        .then(() => this.loading = false)
     }
   }
 }

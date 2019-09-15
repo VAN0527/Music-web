@@ -133,21 +133,13 @@ export default {
   },
   watch: {
     currentSong (newSong, oldSong) {
-      if (!newSong.id) {
-        return
-      }
-
-      if (newSong.id === oldSong.id) {
-        return
-      }
-
-      clearTimeout(this.timer)
-
-      if (this.isPlay) {
-        this.timer = setTimeout(() => {
+      if (!newSong.id || newSong.id === oldSong.id) return
+      
+      this.$nextTick(() => {
+        if (this.isPlay) {
           this.$refs.audio.play()
-        }, 1000)
-      }
+        }
+      })
     },
     isPlay (newIsPlay) {
       this.$nextTick(() => {
@@ -170,8 +162,8 @@ export default {
     changeMode () {
       const mode = (this.playMode + 1) % 3
       const song = this.currentSong
-
       let list
+
       if (mode === playMode.random) {
         list = shuffle(this.list)
       } else {
@@ -191,7 +183,6 @@ export default {
         if (this.currentIndex === this.playlist.length - 1) {
           newIndex = 0
         }
-
         this.setCurrentIndex(newIndex)
       }
     },
@@ -217,12 +208,8 @@ export default {
       }
     },
     error () {
-      if (this.playlist === 1) {
-        this.$refs.audio.pause()
-        this.isPlay = false
-        return
-      }
-      this.next()
+      this.$refs.audio.pause()
+      this.isPlay = false
     },
     timeUpdate (e) {
       this.currentTime = this.$_formateTime(e.target.currentTime)

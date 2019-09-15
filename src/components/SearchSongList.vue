@@ -60,13 +60,15 @@ export default {
       const keyword = query.keyword
       const type = query.type
 
-      getSearchResult(keyword, type, SEARCH_LIMIT, offset).then(res => {
-        if (res.status === 200) {
-          this.songlist = this.$_formatList(res.data.result.playlists)
-          this.pageCount = Math.ceil(res.data.result.playlistCount / SEARCH_LIMIT)
-          this.loading = false
-        }
-      })
+      getSearchResult(keyword, type, SEARCH_LIMIT, offset)
+        .then(res => {
+          if (res.status === 200) {
+            this.songlist = this.$_formatList(res.data.result.playlists)
+            this.pageCount = Math.ceil(res.data.result.playlistCount / SEARCH_LIMIT)
+            
+          }
+        })
+        .then(() => this.loading = false)
     },
     $_formatList (list) {
       return list.map(item => {

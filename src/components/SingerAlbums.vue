@@ -45,12 +45,13 @@ export default {
       })
     },
     $_getSingerAlbums () {
-      getSingerAlbums(this.$route.query.id).then(res => {
-        if (res.status === 200) {
-          this.albums = formatAlbums(res.data.hotAlbums)
-          this.loading = false
-        }
-      })
+      getSingerAlbums(this.$route.query.id)
+        .then(res => {
+          if (res.status === 200) {
+            this.albums = formatAlbums(res.data.hotAlbums)
+          }
+        })
+        .then(() => this.loading = false)
     }
   }
 }

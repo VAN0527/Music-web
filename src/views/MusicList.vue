@@ -25,7 +25,7 @@
       <div class="playlist-wrapper">
         <PlayList
           :list="data.songs"
-          @select="selectItem"
+          @select="selectSong"
         ></PlayList>
       </div>
     </div>
@@ -87,7 +87,7 @@ export default {
         alert ('此列表歌曲无法播放')
       }
     },
-    selectItem (song) {
+    selectSong (song) {
       if (song.url === '') {
         alert('此歌曲无法播放')
       } else {
