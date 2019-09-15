@@ -150,12 +150,13 @@ export default {
             res.data.songs.forEach(item => {
               data[item.id] = this.$_formatSong(item)
             })
-
-            console.log(this.songs.map(song => {
+            
+            this.songs.map(song => {
               let s = data[song.id]
               song.duration = s.duration
               song.picUrl = s.picUrl
-            }))
+              return song
+            })
           }
         })
     },
@@ -167,7 +168,7 @@ export default {
           res.data.data.forEach(item => {
             data[item.id] = item.url
           })
-          // console.log(this.songs.map(song => song.url = data[song.id] || ''))
+          this.songs.map(song => song.url = data[song.id] || '')
         }
       })
     },
@@ -187,9 +188,6 @@ export default {
     },
     $_formatSong (song) {
       return {
-        id: song.id,
-        name: song.name,
-        artists: formatArtists(song.ar),
         duration: formatDuration(song.dt),
         picUrl: `${song.al.picUrl}?param=400y400`,
         url: ''
