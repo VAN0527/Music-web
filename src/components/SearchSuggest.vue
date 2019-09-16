@@ -1,7 +1,7 @@
 <template>
   <div class="suggest">
     <div class="notfound" v-show="suggests.length === 0">
-      <span>未找到相关信息</span>
+      <span>{{ message }}</span>
     </div>
     <div 
       class="suggest-item"
@@ -40,7 +40,8 @@ export default {
   },
   data () {
     return {
-      suggests: []
+      suggests: [],
+      message: ''
     }
   },
   computed: {
@@ -51,6 +52,7 @@ export default {
   watch: {
     keyword (newKeyword) {
       if (newKeyword) {
+        this.message = '正在搜索建议'
         this.suggests = []
         this.$_getSearchSuggest(newKeyword)
       }
@@ -85,7 +87,7 @@ export default {
     },
     $_selectArtist (id) {
       this.$router.push({
-        path: `/singer`,
+        path: '/singer',
         query: {
           id
         }
@@ -93,12 +95,18 @@ export default {
     },
     $_selectAlbums (id) {
       this.$router.push({
-        path: `/album/${id}`
+        path: '/album',
+        query: {
+          id
+        }
       })
     },
     $_selectSongList (id) {
       this.$router.push({
-        path: `/musiclist/${id}`
+        path: '/musiclist',
+        query: {
+          id
+        }
       })
     },
     $_selectSong (id) {
@@ -123,14 +131,20 @@ export default {
       })
     },
     $_getSearchSuggest (keyword) {
-      getSearchSuggest(keyword).then(res => {
-        if (res.status === 200) {
-          if (!res.data.result.order) return
-          const categories = res.data.result.order
-          const suggests = res.data.result
-          this.suggests = this.$_formatSuggests(categories, suggests)
-        }
-      })
+      getSearchSuggest(keyword)
+        .then(res => {
+          if (res.status === 200) {
+            if (!res.data.result.order) {
+              this.message = '未找到相关建议'
+              return
+            } else {
+              const categories = res.data.result.order
+              const suggests = res.data.result
+              this.suggests = this.$_formatSuggests(categories, suggests)
+            }
+          }
+        })
+        .catch(error => this.message = '未找到相关建议')
     },
     $_formatSong (song) {
       return {
@@ -173,6 +187,10 @@ export default {
   background-color: #fff;
   color: $color-black;
   
+  .notfound {
+    text-align: center;
+  }
+
   .suggest-item {
     padding: 2px 0;
     border-bottom: 1px solid #000;
