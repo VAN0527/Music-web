@@ -1,1 +1,1 @@
-export const HOST = 'http://167.179.115.217:3000'
+export const HOST = 'http://netease-cloud-music-api-psi-six-36.vercel.app'
